@@ -31,6 +31,19 @@
 \usepackage{amsfonts}
 
 \usepackage{listings}
+\usepackage{hyphenat}
+\usepackage{hyperref}
+
+\usepackage{xcolor}
+\hypersetup{
+    colorlinks,
+    linkcolor={red!50!black},
+    citecolor={blue!50!black},
+    urlcolor={blue!80!black}
+}
+
+\usepackage[sorting=none]{biblatex}
+\addbibresource{bibliografia.bib}
 
 % ---------------------------------------------------------------------------------------
 %	TIPOGRAFÍA
@@ -134,6 +147,11 @@
  \usepackage[spanish]{babel}
 
 \linespread{1.3} % Line spacing
+\setlength{\parskip}{9pt}
+
+\usepackage[bottom]{footmisc}
+
+\renewcommand*\footnoterule{}
 
 %----------------------------------------------------------------------------------------
 %	CABECERAS Y PIES DE PÁGINA
@@ -154,6 +172,8 @@
 \setlength\parindent{0pt} % Uncomment to remove all indentation from paragraphs
 
 \graphicspath{{Pictures/}} % Specifies the directory where pictures are stored
+
+\usepackage[font=sf]{caption}
 
 \begin{document}
 
@@ -212,7 +232,15 @@ Antonio Ruiz Moya\\ % Supervisor's Name
 %	INTRODUCTION
 %----------------------------------------------------------------------------------------
 
-\section{Introducción}
+\section*{Introducción}
+
+El Protocolo de transferencia de hipertexto (HTTP por sus siglas en inglés) es uno de los protocolos fundamentales de Internet. El desarrollo de HTTP comenzó en 1989 en el CERN por parte de Tim Berners-Lee. El desarrollo de un estándar fue un trabajo colaborativo entre el Grupo de Trabajo de Ingeniería de Internet (Internet Engineering Task Force, IETF) y el Consorcio WWW (World Wide Web Consortium, W3C), proceso que culminó con la publicación de una serie de \textit{Request for Comments} (RFCs)\footnote{Los RFCs son un tipo de documentos técnicos del IETF que datallan técnicamente diversos aspectos del funcionamiento de Internet y otros protocolos.}. La primera definición de \texttt{HTTP/1.1}, la versión de HTTP más utilizada, apareció en el RFC 2068 de 1997. 
+
+Estamos hablando por tanto de un protocolo cuyo diseño comenzó hace más de 25 años. En aquel momento era inimaginable pensar que la tecnología que se estaba desarrollando fuese a ser usada por miles de millones de personas (3.885.567.619 a nivel mundial según las últimas estadísticas\cite{internet-world-stats} de junio de 2017) ni se esperaba que tuviese tal repercusión sobre nuestras vidas. HTTP ha simplificado y facilitado la transmisión de información a nivel mundial. Gracias a ello hemos avanzado hacia una sociedad conectada donde la información y la cultura fluye libremente.
+
+Pero como es de esperar, un protocolo que no fue diseñado con la visión del mundo actual presenta una serie de problemas a resolver. La intención de este trabajo es mostrar las deficiencias de HTTP y explorar una alternativa a la web actual, la web distribuida y el protocolo IPFS.
+
+\newpage
 
 
 %----------------------------------------------------------------------------------------
@@ -222,32 +250,89 @@ Antonio Ruiz Moya\\ % Supervisor's Name
 \section{Problemas de HTTP} % (fold)
 \label{sec:problemas_de_http}
 
-\lipsum[10]
+\subsection{Fragilidad} % (fold)
+\label{sub:fragilidad}
+
+\begin{figure}[h]
+\includegraphics[width=\textwidth]{first-web-server}
+\caption{Primer servidor de HTTP del mundo. Se trata del ordenador personal de Tim Berners-Lee durante su estancia en el CERN.}
+\end{figure}
+
+Para entender por qué decimos que HTTP es \textit{frágil} solo hay que observar la pegatina del primer servidor de HTTP: ``\textit{Esta máquina es un servidor. ¡¡No apagar!!}''. Está ahí para recordarnos que si se apagaba el servidor no se podía acceder al contenido. Otros sitios web en distintos servidores enlazaban a su contenido, de forma que si dejaba de estar en la red, todos esos enlaces no servían para nada. Por otro lado, si ese servidor se movía a otra ubicación, con otra dirección, todos esos enlaces habían muerto.
+
+\begin{figure}[h]
+\includegraphics[width=\textwidth]{404}
+\label{fig:404}
+\caption{Error 404.}
+\end{figure}
+
+Hablamos en pasado pero efectivamente este sigue siendo un problema en la actualidad. No es raro entrar en algún enlace y encotrarnos con el error que podemos ver en la figura \ref{fig:404}. Incluso si no conoces la especificación del protocolo HTTP es probable que ya sepas que 404 es el código de error que nos indica que no hay nada que ver en una dirección.
+
+La desaparición de enlaces (o \textit{link rot} en inglés) es mucho más habitual de lo que se pueda pensar. El creador de \href{pinboard.in}{Pinboard}, Maciej Cegłowski, estima que alrededor del 5\% de los enlaces que almacenan los usuarios en este servicio dejan de funcionar cada año\cite{pinboard-dead-links}. Añade además que uno de sus clientes ha visto cómo dejaban de funcionar el 90\% de los enlaces que llevaba almacenados desde 1997. En 2014, un estudio de Jonathan Zittrain, Kendra Albert y Lawrence Lessig de la Harvard Law School concluyó que aproximadamente el 50\% de los enlaces que aparecen en resoluciones del Tribunal Supremo de los Estados Unidos ya no redireccionan a la información original\cite{scotus-dead-links}. Por estos motivos existen servicios como \href{https://archive.org/}{The Internet Archive}, que se dedica a guardar copias de las páginas web para preservarlas de cara al futuro, o el propio Pinboard, que ofrece a sus usuarios la posibilidad de almacenar copias de los artículos que añadan al servicio.
+
+% subsection fragilidad (end)
+
+\subsection{Hipercentralización} % (fold)
+\label{sub:hipercentralización}
+
+En la \textit{Declaración de Independencia del Ciberespacio}\cite{cyberspace-independence} John Perry Barlow describía una utopía digital en la que los ciudadanos de la red se autogobiernan y las antiguas instituciones no tienen nada que hacer. ``De parte del futuro, os pido a vosotros del pasado que nos dejéis en paz. No sois bienvenidos entre nosotros. No tenéis la soberanía del lugar donde nos reunimos.''
+
+% subsection hipercentralización (end)
+
+\subsection{Ineficiencia} % (fold)
+\label{sub:ineficiencia}
+
+% subsection ineficiencia (end)
+
+\subsection{Dependencia} % (fold)
+\label{sub:dependencia}
+
+% subsection dependencia (end)
 
 % section problemas_de_http (end)
 
 \section{La web distribuida} % (fold)
 \label{sec:la_web_distribuida}
 
-\subsection{Ventajas de la web distribuida} % (fold)
-\label{sub:ventajas_de_la_web_distribuida}
+\subsection{Tecnologías de web distribuida} % (fold)
+\label{sub:tecnologías_de_web_distribuida}
 
-\lipsum[6]
+% subsection tecnologías_de_web_distribuida (end)
 
-\subsubsection{Hola caracola}
-
-\lipsum[3]
-
-% subsection ventajas_de_la_web_distribuida (end)
 % section la_web_distribuida (end)
 
 \section{El protocolo IPFS} % (fold)
 \label{sec:el_protocolo_ipfs}
 
+\subsection{IPFS en detalle} % (fold)
+\label{sub:ipfs_en_detalle}
+
+% subsection ipfs_en_detalle (end)
+
+\subsection{Cómo soluciona IPFS los problemas de HTTP} % (fold)
+\label{sub:cómo_soluciona_ipfs_los_problemas_de_http}
+
+% subsection cómo_soluciona_ipfs_los_problemas_de_http (end)
+
 % section el_protocolo_ipfs (end)
 
 \section{La web distribuida en la actualidad} % (fold)
 \label{sec:la_web_distribuida_en_la_actualidad}
+
+\subsection{La Wikipedia descentralizada} % (fold)
+\label{sub:la_wikipedia_descentralizada}
+
+% subsection la_wikipedia_descentralizada (end)
+
+\subsection{Neocities} % (fold)
+\label{sub:neocities}
+
+% subsection neocities (end)
+
+\subsection{La web del referéndum catalán de 2017} % (fold)
+\label{sub:la_web_del_referéndum_catalán_de_2017}
+
+% subsection la_web_del_referéndum_catalán_de_2017 (end)
 
 % section la_web_distribuida_en_la_actualidad (end)
 
@@ -256,16 +341,7 @@ Antonio Ruiz Moya\\ % Supervisor's Name
 %----------------------------------------------------------------------------------------
 
 \newpage
-\begin{thebibliography}{99} % Bibliography - this is intentionally simple in this template
-
-\bibitem[Figueredo and Wolf, 2009]{Figueredo:2009dg}
-Figueredo, A.~J. and Wolf, P. S.~A. (2009).
-\newblock Assortative pairing and life history strategy - a cross-cultural
-  study.
-\newblock {\em Human Nature}, 20:317--330.
- 
-\end{thebibliography}
-
+\printbibliography
 %----------------------------------------------------------------------------------------
 
 \end{document}
