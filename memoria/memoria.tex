@@ -1,0 +1,271 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Simple Sectioned Essay Template
+% LaTeX Template
+%
+% This template has been downloaded from:
+% http://www.latextemplates.com
+%
+% Note:
+% The \lipsum[#] commands throughout this template generate dummy text
+% to fill the template out. These commands should all be removed when 
+% writing essay content.
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[12pt]{article} % Default font size is 12pt, it can be changed here
+
+\usepackage{geometry} % Required to change the page size to A4
+\geometry{a4paper, left={40mm}, right={40mm}, top={25mm}, bottom={25mm},includehead,includefoot} % Set the page size to be A4 as opposed to the default US Letter
+
+\usepackage{graphicx} % Required for including pictures
+
+\usepackage{float} % Allows putting an [H] in \begin{figure} to specify the exact location of the figure
+\usepackage{wrapfig} % Allows in-line images such as the example fish picture
+
+\usepackage{lipsum} % Used for inserting dummy 'Lorem ipsum' text into the template
+
+\usepackage{amsfonts}
+
+\usepackage{listings}
+
+% ---------------------------------------------------------------------------------------
+%	TIPOGRAFÍA
+% ---------------------------------------------------------------------------------------
+
+\usepackage[no-math]{fontspec}
+\setmainfont[
+	Path=./../fuentes/, 
+	UprightFont=* Regular, 
+	ItalicFont=* Italic,
+	BoldFont=* Bold,
+  	BoldItalicFont=* Bold Italic,
+]{Equity Text A}
+\setsansfont[
+	Path=./../fuentes/, 
+	UprightFont=* Regular, 
+	ItalicFont=* Italic,
+	BoldFont=* Bold,
+  	BoldItalicFont=* Bold Italic,
+]{Concourse T3}
+\setmonofont[
+	Path=./../fuentes/, 
+	UprightFont=* Regular, 
+	ItalicFont=* Italic,
+	BoldFont=* Bold,
+  	BoldItalicFont=* Bold Italic,
+  	SizeFeatures={Size=10.5},
+]{Hack}
+
+\usepackage[math-style=TeX]{unicode-math}
+%\setmathfont{XITS Math}
+\setmathfont[Path=./../fuentes/]{XITS Math}
+\setmathfont[
+	Path=./../fuentes/,
+	range=up/{latin,Latin, num},
+]{Equity Text A Regular}
+\setmathfont[
+	Path=./../fuentes/,
+	range=it/{latin,Latin},
+]{Equity Text A Italic}
+\setoperatorfont\symup
+
+\defaultfontfeatures{Ligatures=TeX,Numbers=Lining}
+
+
+% ---------------------------------------------------------------------------------------
+% 	CONFIGURACIÓN DEL ÍNDICE
+% ---------------------------------------------------------------------------------------
+
+\usepackage{titletoc}
+
+\contentsmargin[0cm]{0cm}
+\titlecontents{chapter}[0em]{\vskip12pt\bfseries\sffamily}
+{\thecontentslabel\enspace}
+{\hspace{1.05em}}
+{ \hfill\contentspage}[\vskip 6pt]
+
+\titlecontents{section}[1em]{\sffamily}
+{\thecontentslabel\enspace}
+{}
+{\titlerule*[1pc]{.}\quad\contentspage}[\vskip 4pt]
+
+\titlecontents{subsection}[2em]{\sffamily}
+{\thecontentslabel\enspace}
+{}
+{\titlerule*[1pc]{.}\quad\contentspage}[\vskip 3pt]
+
+\titlecontents{subsubsection}[4em]{\sffamily}
+{\thecontentslabel\enspace}
+{}
+{\titlerule*[1pc]{.}\quad\contentspage}[\vskip 3pt]
+
+\usepackage{etoolbox}
+\pretocmd{\contentsname}{\sffamily}{}{}
+
+% ---------------------------------------------------------------------------
+% 	TÍTULOS DE PARTES Y SECCIONES
+% ---------------------------------------------------------------------------
+
+\usepackage{titlesec}
+
+% Estilo de los títulos de las partes
+\titleformat{\part}[hang]{\Huge\bfseries\sffamily}{\thepart\hspace{20pt}\textcolor{500}{|}\hspace{20pt}}{0pt}{\Huge\bfseries}
+\titlespacing*{\part}{0cm}{-2em}{2em}[0pt]
+
+% Reiniciamos el contador de secciones entre partes (opcional)
+\makeatletter
+\@addtoreset{section}{part}
+\makeatother
+
+% Estilo de los títulos de las secciones, subsecciones y subsubsecciones
+\titleformat{\section}
+  {\LARGE\bfseries\sffamily}{\thesection}{0.5em}{}
+
+\titleformat{\subsection}
+  {\Large\sffamily}{\thesubsection}{0.25em}{}
+
+\titleformat{\subsubsection}
+  {\large\sffamily}{\thesubsubsection}{0.25em}{}
+
+ \usepackage[spanish]{babel}
+
+\linespread{1.3} % Line spacing
+
+%----------------------------------------------------------------------------------------
+%	CABECERAS Y PIES DE PÁGINA
+%----------------------------------------------------------------------------------------
+
+\usepackage{fancyhdr}
+ 
+\pagestyle{fancy}
+\fancyhf{}
+\rfoot{\sffamily Página \thepage\ de \pageref{LastPage}}
+\lfoot{\sffamily La web distribuida: el protocolo IPFS}
+
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0.5pt}
+
+\usepackage{lastpage}
+
+\setlength\parindent{0pt} % Uncomment to remove all indentation from paragraphs
+
+\graphicspath{{Pictures/}} % Specifies the directory where pictures are stored
+
+\begin{document}
+
+%----------------------------------------------------------------------------------------
+%	PÁGINA DEL TÍTULO
+%----------------------------------------------------------------------------------------
+
+\begin{titlepage}
+\sffamily
+
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}} % Defines a new command for the horizontal lines, change thickness here
+
+\center % Center everything on the page
+
+\textsc{\LARGE Universidad de Granada}\\[1.5cm] % Name of your university/college
+\textsc{\Large Doble Grado en Ingeniería Informática y Matemáticas}\\[0.5cm] % Major heading such as course name
+\textsc{\large Fundamentos de Redes}\\[0.5cm] % Minor heading such as course title
+
+\HRule \\[1cm]
+{ \huge \bfseries La web distribuida: el protocolo IPFS}\\[0.4cm] % Title of your document
+\HRule \\[1.5cm]
+
+\begin{minipage}{0.4\textwidth}
+\begin{flushleft} \large
+\emph{Autores:}\\
+José María Martín Luque\\
+Adolfo Soto Werner % Your name
+\end{flushleft}
+\end{minipage}
+~
+\begin{minipage}{0.4\textwidth}
+\begin{flushright} \large
+\emph{Profesor:} \\
+Antonio Ruiz Moya\\ % Supervisor's Name
+\hfill\\
+\end{flushright}
+\end{minipage}\\[4cm]
+
+{\large \today}\\[3cm] % Date, change the \today to a set date if you want to be precise
+
+%\includegraphics{Logo}\\[1cm] % Include a department/university logo - this will require the graphicx package
+
+\vfill % Fill the rest of the page with whitespace
+
+\end{titlepage}
+
+%----------------------------------------------------------------------------------------
+%	ÍNDICE
+%----------------------------------------------------------------------------------------
+
+\tableofcontents % Include a table of contents
+
+\newpage % Begins the essay on a new page instead of on the same page as the table of contents 
+
+%----------------------------------------------------------------------------------------
+%	INTRODUCTION
+%----------------------------------------------------------------------------------------
+
+\section{Introducción}
+
+
+%----------------------------------------------------------------------------------------
+%	CONTENIDO
+%----------------------------------------------------------------------------------------
+
+\section{Problemas de HTTP} % (fold)
+\label{sec:problemas_de_http}
+
+\lipsum[10]
+
+% section problemas_de_http (end)
+
+\section{La web distribuida} % (fold)
+\label{sec:la_web_distribuida}
+
+\subsection{Ventajas de la web distribuida} % (fold)
+\label{sub:ventajas_de_la_web_distribuida}
+
+\lipsum[6]
+
+\subsubsection{Hola caracola}
+
+\lipsum[3]
+
+% subsection ventajas_de_la_web_distribuida (end)
+% section la_web_distribuida (end)
+
+\section{El protocolo IPFS} % (fold)
+\label{sec:el_protocolo_ipfs}
+
+% section el_protocolo_ipfs (end)
+
+\section{La web distribuida en la actualidad} % (fold)
+\label{sec:la_web_distribuida_en_la_actualidad}
+
+% section la_web_distribuida_en_la_actualidad (end)
+
+%----------------------------------------------------------------------------------------
+%	BIBLIOGRAFÍA
+%----------------------------------------------------------------------------------------
+
+\newpage
+\begin{thebibliography}{99} % Bibliography - this is intentionally simple in this template
+
+\bibitem[Figueredo and Wolf, 2009]{Figueredo:2009dg}
+Figueredo, A.~J. and Wolf, P. S.~A. (2009).
+\newblock Assortative pairing and life history strategy - a cross-cultural
+  study.
+\newblock {\em Human Nature}, 20:317--330.
+ 
+\end{thebibliography}
+
+%----------------------------------------------------------------------------------------
+
+\end{document}
