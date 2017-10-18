@@ -67,11 +67,11 @@
 \setmonofont[
 	Path=./../fuentes/, 
 	UprightFont=* Regular, 
-	ItalicFont=* Italic,
-	BoldFont=* Bold,
-  	BoldItalicFont=* Bold Italic,
+	%ItalicFont=* Italic,
+	%BoldFont=* Bold,
+  	%BoldItalicFont=* Bold Italic,
   	SizeFeatures={Size=10.5},
-]{Hack}
+]{Iosevka}
 
 \usepackage[math-style=TeX]{unicode-math}
 %\setmathfont{XITS Math}
@@ -285,6 +285,29 @@ La \textit{hipercentralización} de la red trae consecuencias negativas. Organiz
 
 \subsection{Ineficiencia} % (fold)
 \label{sub:ineficiencia}
+
+Para comprobar la ineficiencia de transmitir información por HTTP vamos a poner un ejemplo. El vídeo más visto de YouTube según Wikipedia a 17 de octubre de 2017 es ``Luis Fonsi - Despacito ft. Daddy Yankee''\cite{most-viewed-yt}, con 4.055.733.709 visualizaciones a las 11:47.
+
+Supongamos que el vídeo siempre se reprodujese en 720p, de tal forma que el archivo pesa exactamente 67,1MB. 4.055.733.709 visualizaciones de un archivo de 67,1MB son 272.139.731.874MB descargados. Suponiendo que a Google le costase 1 céntimo transmitir 1GB de información (incluyendo todos los gastos del servidor), ya se habría gastado más de 
+272.139.731,874€ en transmitir un único vídeo.
+
+Este precio de 1 céntimo por GB quizás sea posible para Google pero no lo es ni mucho menos para el ciudadano medio. La tabla de precios del CDN de Amazon, CloudFront es la siguiente\cite{cloudfront-prices}:
+
+\begin{figure}[H]
+	\centering
+	\texttt{
+\begin{tabular}{lrrrr}
+  & Estados Unidos & Europa & Japón & India\\
+  Primeros 10TB/mes & 0,085USD & 0,085USD & 0,140USD & 0,170USD\\
+  Siguientes 40TB/mes & 0,080USD & 0,080USD & 0,135USD & 0,130USD\\
+  Siguientes 100TB/mes & 0,060USD & 0,060USD & 0,120USD & 0,110USD\\
+  Siguientes 350TB/mes & 0,040USD & 0,040USD & 0,100USD & 0,100USD\\
+\end{tabular}}
+	\caption{Tabla de precios de Amazon CloudFront en algunas regiones.}
+\end{figure}
+\vspace{-.5cm}
+Podemos observar fácilmente que los precios son mucho mayores, ya que además se cobran las peticiones HTTP y HTTPS. La conclusión a la que queremos llegar es que a pesar de que HTTP ha abaratado muchísimo los costes de distribución de información, siguen siendo altos. Si el contenido a distribuir se encuentra en un servidor concreto, es necesario pagar los gastos generados tanto por distribuir el contenido como por el propio mantenimiento del servidor.
+
 
 % subsection ineficiencia (end)
 
