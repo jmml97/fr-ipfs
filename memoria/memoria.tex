@@ -31,6 +31,15 @@
 \usepackage{amsfonts}
 
 \usepackage{listings}
+\usepackage{listings-golang}
+\lstset{
+	basicstyle=\footnotesize\ttfamily,%
+	breaklines=true,%
+	captionpos=b,                    % sets the caption-position to bottom
+	tabsize=2,	                   % sets default tabsize to 2 spaces
+	%keywordstyle=\color{red},
+}
+
 \usepackage{hyphenat}
 \usepackage{hyperref}
 
@@ -66,12 +75,12 @@
 ]{Concourse T3}
 \setmonofont[
 	Path=./../fuentes/, 
-	UprightFont=* Regular, 
+	UprightFont=* Regular,% 
 	%ItalicFont=* Italic,
-	%BoldFont=* Bold,
+	BoldFont=* Bold,
   	%BoldItalicFont=* Bold Italic,
   	SizeFeatures={Size=10.5},
-]{Iosevka}
+]{FiraCode}
 
 \usepackage[math-style=TeX]{unicode-math}
 %\setmathfont{XITS Math}
@@ -279,7 +288,9 @@ En la \textit{Declaración de Independencia del Ciberespacio}\cite{cyberspace-in
 
 Por desgracia, esta no es la realidad en el año 2017. En la actualidad la web está altamente centralizada. La práctica totalidad de los usuarios de Internet dependen de una serie de servicios concretos. Por poner algunos ejemlos, en 2015 Facebook anunció que más de mil millones de usuarios utilizaron el servicio en un mismo día\cite{billion-facebook}, mientras que una caída del servicio de Google en 2013 provocó una reducción del tráfico de internet del 40\%\cite{google-outage}.
 
-La \textit{hipercentralización} de la red trae consecuencias negativas. Organizaciones como la NSA sólo tienen que intervenir el tráfico de unas pocas empresas para espiarnos, tal y como revelan las filtraciones de Edward Snowden\cite{snowden-leaks}. La censura es mucho más fácil de establecer ya que sólo hay que bloquear el acceso a una serie de sitios concretos. 
+El pasado 26 de octubre una inundación en la sala de servidores de la Universidad de Granada provocó que todos los servicios digitales dejasen de funcionar. Puede parecer algo leve pero gran parte de la actividad de la Universidad depdende de que funcione su infraestructura informática. Las secretarías dependen de la red, así como el servicio de comedores, las redes Wi-Fi (tienen que autenticar los usuarios en el servidor) y la Plataforma de Recursos de Apoyo a la Docencia (PRADO), entre otros.
+
+La \textit{hipercentralización} de la red trae otras consecuencias negativas. Organizaciones como la NSA sólo tienen que intervenir el tráfico de unas pocas empresas para espiarnos, tal y como revelan las filtraciones de Edward Snowden\cite{snowden-leaks}. La censura es mucho más fácil de establecer ya que sólo hay que bloquear el acceso a una serie de sitios concretos. 
 
 % subsection hipercentralización (end)
 
@@ -314,6 +325,8 @@ Podemos observar fácilmente que los precios son mucho mayores, ya que además s
 \subsection{Dependencia} % (fold)
 \label{sub:dependencia}
 
+Como ya hemos visto, Internet está actualmente \textit{hipercentralizado}. Esto implica que dependemos de una serie de infraestructuras clave para su correcto funcionamiento. En 2008 hubo problemas con una serie de cables submarinos de Internet, lo que conllevó que 14 países perdiesen la conexión, total o parcialmente\cite{2008-cable-disruption}.
+
 % subsection dependencia (end)
 
 % section problemas_de_http (end)
@@ -331,10 +344,94 @@ Podemos observar fácilmente que los precios son mucho mayores, ya que además s
 \section{El protocolo IPFS} % (fold)
 \label{sec:el_protocolo_ipfs}
 
-\subsection{IPFS en detalle} % (fold)
-\label{sub:ipfs_en_detalle}
+IPFS es un sistema de archivos distribuido que recoge algunas de las ideas más exitosas de otros sistemas \textit{peer to peer}. Los \textit{nodos} IPFS almacenan objetos en el almacenamiento local y se conectan entre sí para transferir dichos objetos, que representan archivos y otras estructuras de datos. El protocolo IPFS está dividido en una serie de sub-protocolos que se encargan de proporcionar distintas funciones.
 
-% subsection ipfs_en_detalle (end)
+\subsection{Identidades} % (fold)
+\label{sub:identidades}
+
+Se encarga de gestionar la generación y verificación de la identidad de los nodos. Los nodos se identifican por un \texttt{NodeId}, el \textit{hash} criptográfico de una clave pública, generado con S/Kademlia\footnote{Kademlia es un protocolo de la capa de aplicación diseñado para redes P2P descentralizadas. S/Kademlia es una mejora de este protocolo que pretende resolver algunos problemas que presentaba el original, entre ellos la asignación segura de \texttt{nodeId}\cite{S/Kamdelia}.}. Los nodos almacenan su clave pública y su clave privada, encriptada con una \textit{frase de contraseña}.
+
+\begin{lstlisting}[caption={Definición de Nodo.}, language=Golang]
+	// Hash criptográfico
+	type NodeId Multihash
+	type Multihash []byte
+	
+	// Claves
+	type PublicKey []byte
+	type PrivateKey []byte
+
+	type Node struct {
+		NodeId NodeID
+		PubKey PublicKey
+		PriKey PrivateKey
+	}
+\end{lstlisting}
+
+\begin{lstlisting}[caption={Generación de identidad con S/Kamdelia.}, language=Golang]]
+	difficulty = <parámetro integer>
+	n = Node{}
+
+	for cond := true; cond; cond = p < difficulty {
+		n.PubKey, n.PrivKey = PKI.genKeyPair()
+		n.NodeId = hash(n.PubKey)
+		p = count_preceding_zero_bits(hash(n.NodeId))
+	}
+\end{lstlisting}
+
+Cuando dos \textit{peers} se conectan, intercambian sus claves públicas y comprueban: \texttt{hash(other.PublicKey) == other.NodeId}. Si no es así, se cierra la conexión.
+
+IPFS no utiliza una \textit{función hash} concreta, sino que utiliza valores \textit{autodescriptivos}. Así, los valores del \textit{hash digest} se guardan en el formato \textit{multihash}, que es de la forma:\\ 
+
+\centerline{\texttt{<código función><longitud del digest><bytes del digest>}} 
+
+Esto permite que el sistema escoja la mejor función para cada caso y evolucione conforme cambien las opciones.
+
+% subsection identidades (end)
+
+\subsection{Red} % (fold)
+\label{sub:red}
+
+Los nodos IPFS se comunican frecuentemente con cientos de otros nodos en la red, potencialmente a través del vasto Internet. El subsistema de red de IPFS incluye las siguientes funciones:
+
+\begin{itemize}
+	\item Transporte: IPFS puede utilizar cualquier protocolo de transporte, y es más adecuado para WebRTC DataChannels\footnote{Un canal de datos WebRTC te permite enviar texto o datos binarios a través de una conexión activa a un punto.\cite{WebRTC-data-channels}} (para conexión con navegadores) o µTP\footnote{Micro Transport Protocol (μTP) es un protocolo libre multiplataforma diseñado para ser usado en las conexiones P2P del protocolo BitTorrent. Está implementado sobre el protocolo UDP, como alternativa a TCP para la transferencia de datos.\cite{micro-transport-protocol}}.
+	\item Fiabilidad: IPFS puede proporcionar fiabilidad si las redes subyacentes no lo proporcionan, usando µTP o SCTP.
+	\item Conectividad: IPFS también utiliza las técnicas transversales ICE NAT\footnote{Interactive Connectivity Establishment (ICE) es una técnica usada en redes informáticas para encontrar formas de que dos ordenadores se comuniquen entre sí de la forma más directa posible en redes \textit{peer-to-peer}.\cite{interactive-connectivity-establishment}}.
+	\item Integridad: opcionalmente se puede comprobar la integridad de los mensajes utilizando un \textit{checksum hash}.
+	\item Autenticidad: opcionalmente se puede comprobar la autenticidad de los mensajes utilizando HMAC\footnote{Un código de autentificación de mensajes en clave-\textit{hash} (HMAC) es una construcción específica para calcular un código de autentificación de mensaje (MAC) que implica una función \textit{hash} criptográfica en combinación con una llave criptográfica secreta. Como cualquier MAC, puede ser utilizado para verificar simultáneamente la integridad de los datos y la autentificación de un mensaje.\cite{HMAC}} con la clave pública del remitente.
+\end{itemize}
+
+IPFS puede utilizar cualquier red: no depende ni asume acceso a IP. Esto permite utilizar IPFS en redes superpuestas\footnote{Una red superpuesta (\textit{overlay network}) es una red virtual de nodos enlazados lógicamente, que está construida sobre una o más redes subyacentes (\textit{underlying network}).\cite{red-superpuesta}}. IPFS almacena las direcciones como strings con formato byte \texttt{multiaddr} para que la red subyacente las utilice. \texttt{multiaddr} proporciona una forma de expresar direcciones y sus protocolos incluyendo soporte para encapsulación.
+
+% subsection red (end)
+
+\subsection{Enrutamiento} % (fold)
+\label{sub:enrutamiento}
+
+Los nodos IPFS requieren un sistema de enrutado que pueda encontrar tanto las direcciones de red de otros \textit{peers} como \textit{peers} que puedan distribuir objetos concretos. IPFS consigue esto utilizando una Tabla Hash Distribuida (DSHT por sus siglas en inglés) basada en S/Kamdelia y Coral\footnote{CoralCDN es una red de distribución de contenido (CDN por sus siglas en inglés) gratuita y abierta basada en tecnologías \textit{peer-to-peer} compuesta por una red mundial de \textit{proxies} web y \textit{nameservers}.}. Los datos pequeños (menores o iguales a \texttt{1KB}) se almacenan directamente en la DSHT. Para datos mayores, la DSHT almacena referencias, que son los \texttt{NodeIds} de los \textit{peers} que pueden distribuir el bloque en cuestión.
+
+\begin{lstlisting}[caption={Interfaz de la DSHT.}, language=Golang]
+	type IPFSRouting interface {
+		// Obtiene la dirección de un nodo concreto
+		FindPeer(node NodeId)
+
+		// Almacena un pequeño dato en la DSHT
+		SetValue(key []byte, value []byte)
+
+		// Obtiene un pequeño dato de la DSHT
+		GetValue(key []byte)
+
+		// Anuncia que el nodo puede distribuir un dato grande
+		ProvideValue(key Multihash)
+
+		// Obtiene el número de peers distribuyendo un dato grande
+		FindValuePeers(key Multihash, min int)
+	}
+\end{lstlisting}
+
+Distintos casos de uso pueden requerir diferentes sistemas de enrutamiento, por lo que el sistema de enrutamiento de IPFS  puede cambiarse por uno que satisfaga las necesidades del usuario. Mientras que la interfaz descrita arriba se cumpla, el sistema continuará funcionando.
+
+% subsection enrutamiento (end)
 
 \subsection{Cómo soluciona IPFS los problemas de HTTP} % (fold)
 \label{sub:cómo_soluciona_ipfs_los_problemas_de_http}
@@ -356,7 +453,7 @@ Podemos observar fácilmente que los precios son mucho mayores, ya que además s
 
 % subsection neocities (end)
 
-\subsection{La web del referéndum catalán de 2017} % (fold)
+\subsection{La web del referéndum ilegal sobre la independencia de Cataluña (2017)} % (fold)
 \label{sub:la_web_del_referéndum_catalán_de_2017}
 
 % subsection la_web_del_referéndum_catalán_de_2017 (end)
