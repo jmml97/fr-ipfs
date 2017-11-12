@@ -29,6 +29,7 @@
 \usepackage{lipsum} % Used for inserting dummy 'Lorem ipsum' text into the template
 
 \usepackage{amsfonts}
+\usepackage{amsmath}
 
 \usepackage{listings}
 \usepackage{listings-golang}
@@ -53,6 +54,8 @@
 
 \usepackage[sorting=none]{biblatex}
 \addbibresource{bibliografia.bib}
+
+\usepackage{pgfplots}
 
 % ---------------------------------------------------------------------------------------
 %	TIPOGRAFÍA
@@ -432,6 +435,130 @@ Los nodos IPFS requieren un sistema de enrutado que pueda encontrar tanto las di
 Distintos casos de uso pueden requerir diferentes sistemas de enrutamiento, por lo que el sistema de enrutamiento de IPFS  puede cambiarse por uno que satisfaga las necesidades del usuario. Mientras que la interfaz descrita arriba se cumpla, el sistema continuará funcionando.
 
 % subsection enrutamiento (end)
+
+\subsection{Intercambio de bloques: el protocolo BitSwap} % (fold)
+\label{sub:intercambio_de_bloques_el_protocolo_bitswap}
+
+En IPFS la distribución ocurre intercambiando bloques con \textit{peers} utilizando un protocolo inspirado por BitTorrent: BitSwap. Como BitTorrent, los \textit{peers} de BitSwap buscan conseguir un conjunto de bloques (\texttt{want\_list}) y tienen otro conjunto de bloques que ofrecer (\texttt{have\_list}). Sin embargo, a diferencia de BitTorrent, BitSwap no se limita a una serie de bloques en un \textit{torrent}, sino que opera como un ``mercado'' donde los nodos pueden adquirir los bloques que necesitan, independientemente del archivo al que esos bloques pertenezcan. Esta idea requeriría que se implementase una moneda virtual, lo que haría necesario un control central sobre dicha moneda. IPFS implementa esto como la \textit{estrategia BitSwap}, que veremos a continuación.
+
+En el caso base, los nodos BitSwap tienen que proporcionar un valor inmediato entre ellos en forma de bloques. Esto funciona bien cuando la distribución de bloques entre nodos es complementaria: cada uno de ellos tiene lo que necesita el otro. Sin embargo lo más probable es que esto no sea así. En algunos casos los nodos tienen que \textit{trabajar} para conseguir sus bloques. En el caso de que un nodo no tenga algo que quieran sus \textit{peers}, buscará las pizas que estos quieren, con una prioridad menor que los que el propio nodo quiere. Esto incentiva que los nodos almacenen en caché y distribuyan piezas más raras, incluso si no están interesadas en ellas directamente.
+
+\subsubsection{Crédito BitSwap} % (fold)
+\label{ssub:crédito_bitswap}
+
+El protocolo también debe incentivar que los nodos \textit{siembren}\footnote{Del inglés \textit{to seed}, en este caso significa distribuir información.} cuando no necesitan nada en particular, puesto que pueden tener bloques que otros nodos quieran. Los nodos BitSwap envían bloques a sus \textit{peers} de forma optimista, esperando que la \textit{deuda} se les pague en un futuro. Sin embargo, también hay que protegerse de los \textit{leeches}, nodos que nunca comparten. Un sistema de créditos resuelve el problema:
+\begin{enumerate}
+	\item Los \textit{peers} realizan un seguimiento de su saldo (en bytes verificados) con otros nodos.
+	\item Los \textit{peers} envían bloques a otros \textit{peers} deudores probabilísticamente, de acuerdo a una función que decrece conforme la deuda incrementa.
+\end{enumerate}
+
+Si un nodo decide no enviar bloques a un \textit{peer}, el nodo lo ignorará durante un tiempo \texttt{ignore\_cooldown} (10 segundos por defecto en BitSwap). Esto evita que se juegue con la probabilidad simplemente haciendo más peticiones.
+
+% subsubsection crédito_bitswap (end)
+
+\subsubsection{Estrategia BitSwap} % (fold)
+\label{ssub:estrategia_bitswap}
+
+Los \textit{peers} BitSwap pueden adoptar diferentes estrategias, que proporcionarán resultados muy variados en el intercambio de bloques. La elección de una función debería procurar:
+\begin{enumerate}
+	\item maximizar la actividad de intercambio del nodo.
+	\item evitar que los \textit{leechers} se aprovechen del sistema y degraden el intercambio.
+	\item sea efectiva y resistente a otras estrategias.
+	\item ser clemente con \textit{peers} de confianza.
+\end{enumerate}
+Una elección de función que funciona en la práctica es una sigmoide, escalada por una \textit{ratio de deuda}:
+
+Definimos la \textit{ratio de deuda}, \textit{r} entre un nodo y su \textit{peer} como:
+\begin{equation*}
+	r = \frac{\texttt{bytes\_enviados}}{\texttt{bytes\_recibidos} + 1}
+\end{equation*}
+Dado $r$, la probabilidad de enviar a un deudor es:
+\begin{equation*}
+	P(r) = 1 - \frac{1}{1 + exp(6-3r)}
+\end{equation*}
+
+\begin{figure}
+	\centering
+	\begin{tikzpicture}
+		\begin{axis}[
+			xlabel=$r$,
+			ylabel={$P(r)$},
+			xmin=0,xmax=4,
+		]
+		% use TeX as calculator:
+		\addplot {1 - (1/(1 + pow(e, 6-3*x)))};
+		\end{axis}
+	\end{tikzpicture}
+	\caption{Representación de la función de probabilidad $P(r)$.}
+\end{figure}
+
+Como se puede observar en la figura la función decrece fuertemente cuando la \textit{ratio de deuda} del nodo aumenta. Esta radio es una medida de confianza: clemente con las deudas de los nodos con los que se que han intercambiado grandes cantidades de datos e implacable con  aquellos desconocidos y que no son de confianza.
+
+% subsubsection estrategia_bitswap (end)
+
+\subsubsection{Libro mayor de BitSwap} % (fold)
+\label{ssub:libro_mayor_de_bitswap}
+
+Los nodos BitSwap mantienen una especie de ``libro mayor\footnote{Un \textit{libro mayor} es un libro de contabilidad en que se registran las partidas importantes o globales.}'' (\textit{ledger} en inglés) en el que se registran las transferencias con otros nodos. Cuando se inicia una conexión los nodos BitSwap intercambian su libro mayor. Si no concuerdan, el libro mayor se reinicia, perdiendo el crédito y la deuda. Es posible que hay nodos maliciosos que ``pierdan'' el libro mayor a propósito con el fin de borrar deudas. Es muy poco probable que un nodo acumule demasiada deuda como para querer perderla junto con la confianza, aunque otros nodos pueden considerarlo una mala conducta y negarse a intercambiar información.
+
+\begin{lstlisting}[caption={Implementación del libro mayor.}, language=Golang]
+	type Ledger struct {
+		owner NodeId
+		partner NodeId
+		bytes_sent int
+		bytes_recv int
+		timestamp Timestamp
+	}
+\end{lstlisting}
+
+% subsubsection libro_mayor_de_bitswap (end)
+
+\subsubsection{Especificación de Bitswap} % (fold)
+\label{ssub:especificación_de_bitswap}
+
+Los nodos BitSwap siguien un protocolo simple.
+
+\begin{lstlisting}[caption={Implementación del protocolo BitSwap}, language=Golang]
+	// Estado adicional almacenado
+	type BitSwap struct {
+		// Libros mayores del nodo
+		ledgers map[NodeId]Ledger
+
+		// Conexiones abiertas actualmente
+		active map[NodeId]Peer
+
+		// Checksums de bloques que necesita el nodo
+		need_list []Multihash
+
+		// Checksums de bloques que tiene el nodo
+		have_list []Multihash
+	}
+
+	type Peer struct {
+		nodeid NodeId
+		// Libro mayor entre el nodo y este peer
+		ledger Ledger
+
+		// Marca de tiempo del último mensaje recibido
+		last_seen Timestamp
+
+		// Checksums de los bloques que quiere el peer
+		// Incluye bloques que quieren los peers del peer
+		want_list []Multihash
+	}
+
+	// Interfaz del protocolo
+	interface Peer {
+		open(nodeid NodeId, ledger Ledger)
+		send_want_list (want_list WantList)
+		send_block (block Block) complete Bool
+		close(final Bool)
+	}
+\end{lstlisting}
+
+% subsubsection especificación_de_bitswap (end)
+
+% subsection intercambio_de_bloques_el_protocolo_bitswap (end)
 
 \subsection{Cómo soluciona IPFS los problemas de HTTP} % (fold)
 \label{sub:cómo_soluciona_ipfs_los_problemas_de_http}
