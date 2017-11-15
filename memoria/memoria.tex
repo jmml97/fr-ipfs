@@ -47,7 +47,8 @@
 \usepackage{xcolor}
 \hypersetup{
     colorlinks,
-    linkcolor={red!50!black},
+    linkcolor=,
+    %linkcolor={red!50!black},
     citecolor={blue!50!black},
     urlcolor={blue!80!black}
 }
@@ -352,7 +353,7 @@ IPFS es un sistema de archivos distribuido que recoge algunas de las ideas más 
 \subsection{Identidades} % (fold)
 \label{sub:identidades}
 
-Se encarga de gestionar la generación y verificación de la identidad de los nodos. Los nodos se identifican por un \texttt{NodeId}, el \textit{hash} criptográfico de una clave pública, generado con S/Kademlia\footnote{Kademlia es un protocolo de la capa de aplicación diseñado para redes P2P descentralizadas. S/Kademlia es una mejora de este protocolo que pretende resolver algunos problemas que presentaba el original, entre ellos la asignación segura de \texttt{nodeId}\cite{S/Kamdelia}.}. Los nodos almacenan su clave pública y su clave privada, encriptada con una \textit{frase de contraseña}.
+Se encarga de gestionar la generación y verificación de la identidad de los nodos. Los nodos se identifican por un \texttt{NodeId}, el \textit{hash} criptográfico de una clave pública, generado con S/Kademlia\footnote{Kademlia es un protocolo de la capa de aplicación diseñado para redes P2P descentralizadas. S/Kademlia es una mejora de este protocolo que pretende resolver algunos problemas que presentaba el original, entre ellos la asignación segura de \texttt{nodeId}.\cite{S/Kamdelia}}. Los nodos almacenan su clave pública y su clave privada, encriptada con una \textit{frase de contraseña}.
 
 \begin{lstlisting}[caption={Definición de Nodo.}, language=Golang]
 	// Hash criptográfico
@@ -461,10 +462,10 @@ Si un nodo decide no enviar bloques a un \textit{peer}, el nodo lo ignorará dur
 
 Los \textit{peers} BitSwap pueden adoptar diferentes estrategias, que proporcionarán resultados muy variados en el intercambio de bloques. La elección de una función debería procurar:
 \begin{enumerate}
-	\item maximizar la actividad de intercambio del nodo.
-	\item evitar que los \textit{leechers} se aprovechen del sistema y degraden el intercambio.
-	\item sea efectiva y resistente a otras estrategias.
-	\item ser clemente con \textit{peers} de confianza.
+	\item Maximizar la actividad de intercambio del nodo.
+	\item Evitar que los \textit{leechers} se aprovechen del sistema y degraden el intercambio.
+	\item Sea efectiva y resistente a otras estrategias.
+	\item Ser clemente con \textit{peers} de confianza.
 \end{enumerate}
 Una elección de función que funciona en la práctica es una sigmoide, escalada por una \textit{ratio de deuda}:
 
@@ -499,7 +500,7 @@ Como se puede observar en la figura la función decrece fuertemente cuando la \t
 \subsubsection{Libro mayor de BitSwap} % (fold)
 \label{ssub:libro_mayor_de_bitswap}
 
-Los nodos BitSwap mantienen una especie de ``libro mayor\footnote{Un \textit{libro mayor} es un libro de contabilidad en que se registran las partidas importantes o globales.}'' (\textit{ledger} en inglés) en el que se registran las transferencias con otros nodos. Cuando se inicia una conexión los nodos BitSwap intercambian su libro mayor. Si no concuerdan, el libro mayor se reinicia, perdiendo el crédito y la deuda. Es posible que hay nodos maliciosos que ``pierdan'' el libro mayor a propósito con el fin de borrar deudas. Es muy poco probable que un nodo acumule demasiada deuda como para querer perderla junto con la confianza, aunque otros nodos pueden considerarlo una mala conducta y negarse a intercambiar información.
+Los nodos BitSwap mantienen una especie de ``libro mayor''\footnote{Un \textit{libro mayor} es un libro de contabilidad en que se registran las partidas importantes o globales.} (\textit{ledger} en inglés) en el que se registran las transferencias con otros nodos. Cuando se inicia una conexión los nodos BitSwap intercambian su libro mayor. Si no concuerdan, el libro mayor se reinicia, perdiendo el crédito y la deuda. Es posible que hay nodos maliciosos que ``pierdan'' el libro mayor a propósito con el fin de borrar deudas. Es muy poco probable que un nodo acumule demasiada deuda como para querer perderla junto con la confianza, aunque otros nodos pueden considerarlo una mala conducta y negarse a intercambiar información.
 
 \begin{lstlisting}[caption={Implementación del libro mayor.}, language=Golang]
 	type Ledger struct {
@@ -556,9 +557,162 @@ Los nodos BitSwap siguien un protocolo simple.
 	}
 \end{lstlisting}
 
+Un esquema de una conexión con un \textit{peer} sería el siguiente:
+\begin{enumerate}
+	\item Abrir: los \textit{peers} envían \texttt{ledgers} hasta que estén de acuerdo.
+	\item Envío: los \textit{peers} intercambian \texttt{wait\_lists} y \texttt{blocks}.
+	\item Cierre: los \textit{peers} desactivan la conexión.
+	\item Ignorado: (estado especial) un \textit{peer} es ignorado (durante un tiempo específico) si la estrategia de un nodo evitar enviar información.
+\end{enumerate}
+
+% TODO: ¿Incluir explicación de las funciones de Peer?
+
 % subsubsection especificación_de_bitswap (end)
 
 % subsection intercambio_de_bloques_el_protocolo_bitswap (end)
+
+\subsection{GDA de Merkle de objetos} % (fold)
+\label{sub:grafo_dirigido_acíclico_de_merkle_de_objetos}
+
+IFPS implementa un GDA de Merkle, es decir, un grafo dirigido acíclico donde los enlaces entre los objetos son \textit{hashes} criptográficos. Es una generalización de la estructura de datos de Git. Estos grafos proporcionan a IFPS una serie de propiedades muy útiles:
+\begin{enumerate}
+	\item Direccionamiento de contenido: todo el contenido se identifica de forma única mediente el \textit{checksum} de su \texttt{multihash}, incluyendo enlaces.
+	\item Resisencia a la manipulación: todo el contenido se verifica mediante su \textit{checksum}. Si los datos se manipulan o corrompen, IPFS lo detecta.
+	\item Desduplicación: todos los objetos que tienen el mismo contenido son iguales y se almacenan una única vez.
+\end{enumerate}
+
+\begin{lstlisting}[caption={Implementación de los objetos IPFS.}, language=Golang]
+	type IPFSLink struct {
+		// Nombre o alias del enlace
+		Name string
+
+		// Hash criptográfico del objetivo
+		Hash Multihash
+
+		// Tamaño total del objetivo
+		Size int
+	}
+
+	type IPFSObject struct {
+		// Array de enlaces
+		links []IPFSLink
+
+		// Datos opacos del contenido
+		data []byte
+	}
+\end{lstlisting}
+
+\subsubsection{Rutas} % (fold)
+\label{ssub:rutas}
+
+Los objetos IPFS pueden ser recorridos con una API de rutas \textit{string}. Las rutas duncionan como lo hacen en sistemas UNIX tradicionales y en la Web. Los enlaces del GDA de Merkle hacen que recorrerlo sea muy sencillo.
+
+\begin{lstlisting}[caption={Rutas en IPFS.}]
+	// Formato
+	/ipfs/<hash-del-objeto>/<nombre-del-objeto>
+
+	// Ejemplo
+	/ipfs/XLYkgq61DYaQ8NhkcqyU7rLcnSa7dSHQ16x/foo.txt
+\end{lstlisting}
+
+% subsubsection rutas (end)
+
+% subsection grafo_dirigido_acíclico_de_merkle_de_objetos (end)
+
+\subsection{Archivos} % (fold)
+\label{sub:archivos}
+
+IPFS también define un conjunto de objetos para modelar un sistema de archivos de versiones sobre el GDA de Merkle. Este modelo de objetos es similar al de Git:
+\begin{enumerate}
+	\item \texttt{blob}: un bloque de datos de tamaño variable.
+	\item \texttt{list}: una colección de \texttt{blobs} u otras listas.
+	\item \texttt{tree}: una colección de \texttt{blobs}, listas u otros árboles.
+	\item \texttt{commit}: una instantánea en el historial de versiones del árbol.
+\end{enumerate}
+
+\subsubsection{Objeto de archivo: \texttt{blob}} % (fold)
+\label{ssub:objeto_de_archivo_blob}
+
+El objeto \texttt{blob} contiene una unidad de datos direccionable y representa un archivo. En IPFS los archivos pueden representarse por \texttt{lists} o \texttt{blobs}. Estos últimos no tienen enlaces.
+
+\begin{lstlisting}[caption={Estructura JSON de un \texttt{blob}.}]
+	{
+		"data": "datos aquí",
+	}
+\end{lstlisting}
+
+% subsubsection objeto_de_archivo_blob (end)
+
+\subsubsection{Objeto de archivo: \texttt{list}} % (fold)
+\label{ssub:objeto_de_archivo_list}
+
+El objeto \texttt{list} representa un archivo grande, formado a partir de varios \texttt{blobs} IPFS concatenados. Los objetos \texttt{list} contienen una secuencia ordenada de objetos \texttt{blob} o \texttt{list}.
+
+\begin{lstlisting}[caption={Estructura JSON de un \texttt{list}.}]
+	{
+		// Las listas pueden tener un array de objetos como datos
+		"data": ["blob", "list", "blob"],
+
+		// Las listas no tienen nombres en los enlaces
+		"links": [
+			{ "hash": "nccSbCKcEWHAJ9wj0M72", "size": 38231 },
+			{ "hash": "2dUB2OS5O7rJBI57n7Hs", "size": 110 },
+			{ "hash": "BHHGh0pUmwiAyjN5mbTY", "size": 6468 },
+		]
+	}
+\end{lstlisting}
+
+% subsubsection objeto_de_archivo_list (end)
+
+\subsubsection{Objeto de archivo: \texttt{tree}} % (fold)
+\label{ssub:objeto_de_archivo_tree}
+
+El objeto \texttt{tree} de IPFS es similiar al de Git: representa un directorio, un \textit{mapeo} de nombres a \textit{hashes}. Los \textit{hashes} hacen referencia a \texttt{blobs}, \texttt{lists}, \texttt{trees} o \texttt{commits}.
+
+\begin{lstlisting}[caption={Estructura JSON de un \texttt{tree}.}]
+	{
+		// Los árboles pueden tener un array de objetos como datos
+		"data": ["blob", "list", "blob"],
+
+		// Las listas no tienen nombres en los enlaces
+		"links": [
+			{ "hash": "nccSbCKcEWHAJ9wj0M72", "name": "test1", "size": 38231 },
+			{ "hash": "2dUB2OS5O7rJBI57n7Hs", "name": "test2", "size": 110 },
+			{ "hash": "BHHGh0pUmwiAyjN5mbTY", "name": "test3", "size": 6468 },
+		]
+	}
+\end{lstlisting}
+
+% subsubsection objeto_de_archivo_tree (end)
+
+\subsubsection{Objeto de archivo: \texttt{commit}} % (fold)
+\label{ssub:objeto_de_archivo_commit}
+
+El objeto \texttt{commit} en IPFS representa una instantánea en el historial de versiones de cualquier objeto. Es similar al de Git, pero puede hacer referencia a cualquier tipo de objeto. También enlaza al objeto autor.
+
+\begin{lstlisting}[caption={Estructura JSON de un \texttt{commit}.}]
+	{
+		"data": {
+			"type": "tree",
+			"date": "2017-11-12 19:58:00",
+			"message": "El mensaje del commit."
+		},
+		"links": [
+			{ "hash": "nccSbCKcEWHAJ9wj0M72", "name": "parent", "size": 38231 },
+			{ "hash": "2dUB2OS5O7rJBI57n7Hs", "name": "object", "size": 110 },
+			{ "hash": "BHHGh0pUmwiAyjN5mbTY", "name": "author", "size": 6468 },
+		]
+	}
+\end{lstlisting}
+
+% subsubsection objeto_de_archivo_commit (end)
+
+% subsection archivos (end)
+
+\subsection{IPNS: Denominación y estado mutable} % (fold)
+\label{sub:ipns_denominación_y_estado_mutable}
+
+% subsection ipns_denominación_y_estado_mutable (end)
 
 \subsection{Cómo soluciona IPFS los problemas de HTTP} % (fold)
 \label{sub:cómo_soluciona_ipfs_los_problemas_de_http}
