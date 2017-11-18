@@ -1,0 +1,234 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Simple Sectioned Essay Template
+% LaTeX Template
+%
+% This template has been downloaded from:
+% http://www.latextemplates.com
+%
+% Note:
+% The \lipsum[#] commands throughout this template generate dummy text
+% to fill the template out. These commands should all be removed when 
+% writing essay content.
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[12pt]{article} % Default font size is 12pt, it can be changed here
+
+\usepackage{geometry} % Required to change the page size to A4
+\geometry{a4paper, left={40mm}, right={40mm}, top={25mm}, bottom={25mm},includehead,includefoot} % Set the page size to be A4 as opposed to the default US Letter
+
+\usepackage{graphicx} % Required for including pictures
+
+\usepackage{float} % Allows putting an [H] in \begin{figure} to specify the exact location of the figure
+\usepackage{wrapfig} % Allows in-line images such as the example fish picture
+
+\usepackage{lipsum} % Used for inserting dummy 'Lorem ipsum' text into the template
+
+\usepackage{amsfonts}
+\usepackage{amsmath}
+
+\usepackage{listings}
+\lstset{
+	basicstyle=\footnotesize\ttfamily,%
+	breaklines=true,%
+	captionpos=b,                    % sets the caption-position to bottom
+	tabsize=2,	                   % sets default tabsize to 2 spaces
+	%keywordstyle=\color{red},
+}
+
+\usepackage{hyphenat}
+\usepackage{hyperref}
+
+\usepackage{xcolor}
+\hypersetup{
+    colorlinks,
+    linkcolor=,
+    %linkcolor={red!50!black},
+    citecolor={blue!50!black},
+    urlcolor={blue!80!black}
+}
+
+\usepackage[sorting=none]{biblatex}
+\addbibresource{bibliografia.bib}
+
+\usepackage{pgfplots}
+
+% ---------------------------------------------------------------------------------------
+%	TIPOGRAFÍA
+% ---------------------------------------------------------------------------------------
+
+\usepackage[no-math]{fontspec}
+\setmainfont[
+	Path=./../fuentes/, 
+	UprightFont=* Regular, 
+	ItalicFont=* Italic,
+	BoldFont=* Bold,
+  	BoldItalicFont=* Bold Italic,
+]{Equity Text A}
+\setsansfont[
+	Path=./../fuentes/, 
+	UprightFont=* Regular, 
+	ItalicFont=* Italic,
+	BoldFont=* Bold,
+  	BoldItalicFont=* Bold Italic,
+]{Concourse T3}
+\setmonofont[
+	Path=./../fuentes/, 
+	UprightFont=* Regular,% 
+	%ItalicFont=* Italic,
+	BoldFont=* Bold,
+  	%BoldItalicFont=* Bold Italic,
+  	SizeFeatures={Size=10.5},
+]{FiraCode}
+
+\usepackage[math-style=TeX]{unicode-math}
+%\setmathfont{XITS Math}
+\setmathfont[Path=./../fuentes/]{XITS Math}
+\setmathfont[
+	Path=./../fuentes/,
+	range=up/{latin,Latin, num},
+]{Equity Text A Regular}
+\setmathfont[
+	Path=./../fuentes/,
+	range=it/{latin,Latin},
+]{Equity Text A Italic}
+\setoperatorfont\symup
+
+\defaultfontfeatures{Ligatures=TeX,Numbers=Lining}
+
+
+% ---------------------------------------------------------------------------------------
+% 	CONFIGURACIÓN DEL ÍNDICE
+% ---------------------------------------------------------------------------------------
+
+\usepackage{titletoc}
+
+\contentsmargin[0cm]{0cm}
+\titlecontents{chapter}[0em]{\vskip12pt\bfseries\sffamily}
+{\thecontentslabel\enspace}
+{\hspace{1.05em}}
+{ \hfill\contentspage}[\vskip 6pt]
+
+\titlecontents{section}[1em]{\sffamily}
+{\thecontentslabel\enspace}
+{}
+{\titlerule*[1pc]{.}\quad\contentspage}[\vskip 4pt]
+
+\titlecontents{subsection}[2em]{\sffamily}
+{\thecontentslabel\enspace}
+{}
+{\titlerule*[1pc]{.}\quad\contentspage}[\vskip 3pt]
+
+\titlecontents{subsubsection}[4em]{\sffamily}
+{\thecontentslabel\enspace}
+{}
+{\titlerule*[1pc]{.}\quad\contentspage}[\vskip 3pt]
+
+\usepackage{etoolbox}
+\pretocmd{\contentsname}{\sffamily}{}{}
+
+% ---------------------------------------------------------------------------
+% 	TÍTULOS DE PARTES Y SECCIONES
+% ---------------------------------------------------------------------------
+
+\usepackage{titlesec}
+
+% Estilo de los títulos de las partes
+\titleformat{\part}[hang]{\Huge\bfseries\sffamily}{\thepart\hspace{20pt}\textcolor{500}{|}\hspace{20pt}}{0pt}{\Huge\bfseries}
+\titlespacing*{\part}{0cm}{-2em}{2em}[0pt]
+
+% Reiniciamos el contador de secciones entre partes (opcional)
+\makeatletter
+\@addtoreset{section}{part}
+\makeatother
+
+% Estilo de los títulos de las secciones, subsecciones y subsubsecciones
+\titleformat{\section}
+  {\LARGE\bfseries\sffamily}{\thesection}{0.5em}{}
+
+\titleformat{\subsection}
+  {\Large\sffamily}{\thesubsection}{0.25em}{}
+
+\titleformat{\subsubsection}
+  {\large\sffamily}{\thesubsubsection}{0.25em}{}
+
+ \usepackage[spanish]{babel}
+
+\linespread{1.3} % Line spacing
+\setlength{\parskip}{9pt}
+
+\usepackage[bottom]{footmisc}
+
+\renewcommand*\footnoterule{}
+
+
+\setlength\parindent{0pt} % Uncomment to remove all indentation from paragraphs
+
+\graphicspath{{Pictures/}} % Specifies the directory where pictures are stored
+
+\usepackage[font=sf]{caption}
+
+\begin{document}
+
+\section*{Guía para la Demo de IPFS}
+\pagenumbering{gobble}
+
+Asumimos que tenemos IPFS instalado.
+
+Inicializamos un nodo IPFS con \texttt{ipfs\ init}. Generará el
+\emph{keypair} y creará un repositorio.
+
+\texttt{peer\ identity} es el \emph{hash} de la clave pública.
+
+Accedemos al directorio \textit{Demo} que contiene algunos archivos.
+
+\texttt{ipfs\ add\ -r\ .} añade todo el directorio a IPFS. Nos muestra
+los \emph{hashes} de los archivos.
+
+Si dos archivos tienen el mismo \emph{hash} es porque son iguales.
+
+\texttt{ipfs\ ls\ \textless{}hash\ del\ directorio\textgreater{}} nos
+muestra los archivos del directorio que acabamos de añadir.
+
+\texttt{ipfs\ cat\ \textless{}hash\ de\ un\ archivo\textgreater{}} nos
+muestra el contenido del archivo. Podemos hacer
+\texttt{ipfs\ cat\ \textless{}hash\ de\ un\ archivo\textgreater{}\ \textgreater{}\ \textless{}nombre\ archivo\ local\textgreater{}}
+para guardar los contenidos en un archivo que podemos abrir.
+
+Podemos iniciar el \emph{daemon} IPFS con \texttt{ipfs\ daemon}, que
+iniciará el servidor IPFS y nos conectará con el resto de la red.
+
+Si hacemos \texttt{ipfs\ id} nos mostrará información sobre nuestro nodo
+IPFS, incluyendo la clave pública.
+
+\texttt{ipfs\ swarm\ peers} nos muestra a qué otros nodos estamos
+conectados. Podemos obtener información de estos nodos con
+\texttt{ipfs\ id\ \textless{}hash\textgreater{}}.
+
+Podemos acceder al servidor desde
+\texttt{localhost:8080/ipfs/\textless{}hash\textgreater{}}, siendo
+\texttt{\textless{}hash\textgreater{}} el hash del archivo al que
+queremos acceder.
+
+Podemos acceder igualmente al contenido de nuestro ordenador desde otro
+\emph{gateway} de IPFS.
+
+Por ejemplo, al mismo archivo de antes podemos acceder con su
+\emph{hash}. Un \emph{gateway} es
+\texttt{gateway.ipfs.io/ipfs/\textless{}hash\textgreater{}}. Lo que esto
+hace es hará una petición, buscando en la DHT el archivo, contactará con
+mi ordenador y bajará el archivo.
+
+De igual forma, utilizando nuestro servidor local podemos acceder a
+archivos que se encuentran en otros nodos. Por ejemplo, si queremos
+acceder a una copia de la Wikipedia en IPFS simplemente hacemos
+\texttt{localhost:8080/ipfs/\textless{}hash\ de\ la\ wikipedia\textgreater{}}.
+
+Podemos acceder a la interfaz web con \texttt{127.0.0.1:5000/webui}.
+
+
+\end{document}
