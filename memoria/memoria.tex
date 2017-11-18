@@ -303,21 +303,21 @@ La \textit{hipercentralización} de la red trae otras consecuencias negativas. O
 
 Para comprobar la ineficiencia de transmitir información por HTTP vamos a poner un ejemplo. El vídeo más visto de YouTube según Wikipedia a 17 de octubre de 2017 es ``Luis Fonsi - Despacito ft. Daddy Yankee''\cite{most-viewed-yt}, con 4.055.733.709 visualizaciones a las 11:47.
 
-Supongamos que el vídeo siempre se reprodujese en 720p, de tal forma que el archivo pesa exactamente 67,1MB. 4.055.733.709 visualizaciones de un archivo de 67,1MB son 272.139.731.874MB descargados. Suponiendo que a Google le costase 1 céntimo transmitir 1GB de información (incluyendo todos los gastos del servidor), ya se habría gastado más de 
-272.139.731,874€ en transmitir un único vídeo.
+Supongamos que el vídeo siempre se reprodujese en 720p, de tal forma que el archivo pesa exactamente 67,1MB. 4.055.733.709 visualizaciones de un archivo de 67,1MB son 272.139.731.874MB descargados. Suponiendo que a Google le costase 1 céntimo transmitir 1GB de información\cite{youtube-transmission-cost} (incluyendo todos los gastos del servidor), ya se habría gastado más de 2.721.397,32€ en transmitir un único vídeo.
 
 Este precio de 1 céntimo por GB quizás sea posible para Google pero no lo es ni mucho menos para el ciudadano medio. La tabla de precios del CDN de Amazon, CloudFront es la siguiente\cite{cloudfront-prices}:
 
 \begin{figure}[H]
 	\centering
 	\texttt{
+	\makebox[\textwidth][c]{
 \begin{tabular}{lrrrr}
   & Estados Unidos & Europa & Japón & India\\
   Primeros 10TB/mes & 0,085USD & 0,085USD & 0,140USD & 0,170USD\\
   Siguientes 40TB/mes & 0,080USD & 0,080USD & 0,135USD & 0,130USD\\
   Siguientes 100TB/mes & 0,060USD & 0,060USD & 0,120USD & 0,110USD\\
   Siguientes 350TB/mes & 0,040USD & 0,040USD & 0,100USD & 0,100USD\\
-\end{tabular}}
+\end{tabular}}}
 	\caption{Tabla de precios de Amazon CloudFront en algunas regiones.}
 \end{figure}
 \vspace{-.5cm}
@@ -326,10 +326,12 @@ Podemos observar fácilmente que los precios son mucho mayores, ya que además s
 
 % subsection ineficiencia (end)
 
-\subsection{Dependencia} % (fold)
+\subsection{Dependencia de infraestructuras clave} % (fold)
 \label{sub:dependencia}
 
 Como ya hemos visto, Internet está actualmente \textit{hipercentralizado}. Esto implica que dependemos de una serie de infraestructuras clave para su correcto funcionamiento. En 2008 hubo problemas con una serie de cables submarinos de Internet, lo que conllevó que 14 países perdiesen la conexión, total o parcialmente\cite{2008-cable-disruption}.
+
+Otra infraestructura clave es BGP (\textit{Border Gateway Protocol}), que se dice que es ``el pegamento de Internet''. Esto se debe a que se encarga de establecer rutas entre AS\footnote{Un Sistema Autónomo (\textit{Autonomous System} o AS en inglés) es un grupo de redes IP que poseen una política de rutas propia e independiente.}. Por tanto, si se produce un error en BGP las direcciones web pueden apuntar a sitios incorrectos. Es exactamente lo que ocurrió con Google en la madrugada del 6 de noviembre de 2012: desde algunos sitios no se podía acceder a los servicios de esta empresa. Los empleados de CloudFlare\cite{cloudflare-google-outage} detectaron que las rutas de las direcciones IP de Google pasaban por un proveedor de servicio de Indonesia. El problema probablemente fue que este ISP anunció a través de BGP que las IP de Google pertenecían a una red errónea. Este hecho se conoce como ``fuga de rutas'', puesto que la ruta se ``fuga'' del camino correcto.
 
 % subsection dependencia (end)
 
@@ -338,8 +340,57 @@ Como ya hemos visto, Internet está actualmente \textit{hipercentralizado}. Esto
 \section{La web distribuida} % (fold)
 \label{sec:la_web_distribuida}
 
+El propósito de la web distribuida es básicamente deshacerse de la idea de que exista un único emisor central haciendo que cualquier receptor pueda ser a la vez emisor de información. De la misma forma cualquier receptor puede elegir cual es el emisor que mas le conviene en cada momento según sus circunstancias. De esta forma se evitan riesgos tan importantes como la necesidad de confiar en el buen funcionamiento de un único servidor para conseguir una determinada información.
+
+Un ejemplo en la naturaleza que ilustra de forma bastante certera la idea de web distribuida es la ramificación de las neuronas donde cada una de ellas tiene unas ramificaciones capaces de unirse a otras neuronas. De forma que la perdida de una de esas conexiones no impediría la conexión entre las neuronas que conectaba ya que hay mas caminos que las unan.
+
+Durante una reunión celebrada con otros científicos computacionales, Tim Berners-Lee y Brewster Kahle, jefe de \textit{Internet Archive}, debatieron sobre los nuevos retos de la web y la tendencia a fortalecer el desarrollo de la web descentralizada, es decir, páginas web que podrían distribuirse ampliamente sin el control de un servidor web o alguna empresa de almacenamiento que cobran cuotas como Amazon, DropBox o Google.
+
+Kahle dijo: ``Edward Snowden mostró que inadvertidamente hemos construido la mayor red de vigilancia del mundo con la web''. Ahora, es posible que los gobiernos y las empresas puedan obtener información de quién está leyendo qué páginas web.
+(http://mediatelecom.com.mx/index.php/agencia-informativa/agencia-tecnologia/item/109267-berners-lee-se-pronuncia-por-una-web-descentralizada)
+
+
+
 \subsection{Tecnologías de web distribuida} % (fold)
 \label{sub:tecnologías_de_web_distribuida}
+
+Vamos a listar las tecnologías de web distribuida según a que están orientadas dando algunos ejemplos.
+
+\begin{itemize}
+  \item Orientadas a tecnología Blockchain\footnote{El Blockchain es un ledger digital infalible de transacciones económicas que puede ser programado para registrar no solo trasacciones financieras sino cualquier cosa virtual con valor. Don \& Alex Tapscott, autores de Blockchain Revolution (2016)(https://blockgeeks.com/guides/what-is-blockchain-technology/)}
+  \begin{itemize}
+    \item Ethereum: Es una plataforma descentralizada que permite la creación de acuerdos inteligentes entre pares.
+  \end{itemize}
+  \item Orientadas a Comunicación:
+  \begin{itemize}
+    \item BitMessage: Se dedica a la difusión de datos encriptados.
+    \item Ricochet: Es un chat completamente anónimo y sin metadatos.
+  \end{itemize}
+  \item Orientadas a Bases de Datos:
+  \begin{itemize}
+    \item BigchainDB: Es una base de datos escalable que divide en capas la tecnologia Blockchain sobredatos descentralizados.
+    \item IPDB: Es una base de datos federada construida sobre BigchainDB e IPFS. LA mantienen una red de vigilantes alrededor del mundo, de los que al menos la mitad lo hacen sin ánimo de lucro.
+  \end{itemize}
+  \item Orientadas a Compartir y Almacenar Datos:
+  \begin{itemize}
+    \item IPFS: Es un sistema de almcenamiento de archivos distribuidos.
+    \item OnionShare: Aloja una serie de archivos seleccionados como si fueran un servicio oculto en el ordenador del usuario.
+    \item BitTorrent: Es un protocolo para compartir archivos distribuidos.
+  \end{itemize}
+  \item Webs descentralizadas:
+    \begin{itemize}
+      \item I2P: Red anónima con servicios ocultos.
+      \item Tor: Proxy de red anónimo. Se suele utilizar para navegar por la "Deep Web" de forma "segura".
+    \end{itemize}
+   \item MarketPlace\footnote{Plataforma que permite a vendedores y compradores relacionarse para efectuar una transacción comercial de forma que ésta se desarrolle en las mejores condiciones.(https://www.prestashop.com/es/blog/que-son-los-marketplaces-y-como-sacar-el-maximo-partido-de-ellos)}
+    \begin{itemize}      
+      \item  OpenBazar
+    \end{itemize}
+   	\item Orientados a Microbloggueo\footnote{Permite a los usuarios publicar mensajes breves.}
+   	\begin{itemize}
+    	\item Twister: Plataforma P2P de microblogueo completamente descentralizada que dispone de mensajes directos encriptados, anonimato ya que la dirección IP con la que se accede no se almacena en ningún servidor y sin censura ya que es completamente descentralizado.
+    \end{itemize} 
+\end{itemize}
 
 % subsection tecnologías_de_web_distribuida (end)
 
@@ -428,7 +479,7 @@ Los nodos IPFS requieren un sistema de enrutado que pueda encontrar tanto las di
 		// Anuncia que el nodo puede distribuir un dato grande
 		ProvideValue(key Multihash)
 
-		// Obtiene el número de peers distribuyendo un dato grande
+		// Obtiene una serie de peers distribuyendo un dato grande
 		FindValuePeers(key Multihash, min int)
 	}
 \end{lstlisting}
@@ -574,7 +625,7 @@ Un esquema de una conexión con un \textit{peer} sería el siguiente:
 \subsection{GDA de Merkle de objetos} % (fold)
 \label{sub:grafo_dirigido_acíclico_de_merkle_de_objetos}
 
-IFPS implementa un GDA de Merkle, es decir, un grafo dirigido acíclico donde los enlaces entre los objetos son \textit{hashes} criptográficos. Es una generalización de la estructura de datos de Git. Estos grafos proporcionan a IFPS una serie de propiedades muy útiles:
+Para el sistema de archivos IFPS implementa un GDA de Merkle, es decir, un grafo dirigido acíclico donde los enlaces entre los objetos son \textit{hashes} criptográficos. Es una generalización de la estructura de datos de Git. Estos grafos proporcionan a IFPS una serie de propiedades muy útiles:
 \begin{enumerate}
 	\item Direccionamiento de contenido: todo el contenido se identifica de forma única mediente el \textit{checksum} de su \texttt{multihash}, incluyendo enlaces.
 	\item Resisencia a la manipulación: todo el contenido se verifica mediante su \textit{checksum}. Si los datos se manipulan o corrompen, IPFS lo detecta.
@@ -633,7 +684,7 @@ IPFS también define un conjunto de objetos para modelar un sistema de archivos 
 \subsubsection{Objeto de archivo: \texttt{blob}} % (fold)
 \label{ssub:objeto_de_archivo_blob}
 
-El objeto \texttt{blob} contiene una unidad de datos direccionable y representa un archivo. En IPFS los archivos pueden representarse por \texttt{lists} o \texttt{blobs}. Estos últimos no tienen enlaces.
+El objeto \texttt{blob} contiene una unidad de datos direccionable y en general representa un archivo sencillo. Un \texttt{blob} es simplemente un conjunto de datos en binario. No hace referencia a nada más ni tiene ningún tipo de atributos.
 
 \begin{lstlisting}[caption={Estructura JSON de un \texttt{blob}.}]
 	{
@@ -709,33 +760,65 @@ El objeto \texttt{commit} en IPFS representa una instantánea en el historial de
 
 % subsection archivos (end)
 
-\subsection{IPNS: Denominación y estado mutable} % (fold)
+\subsection{IPNS: Nomenclatura y estado mutable} % (fold)
 \label{sub:ipns_denominación_y_estado_mutable}
 
+IPFS necesita nomenclatura mutable, es decir: que si se modifica un archivo se pueda acceder a él en la misma dirección. Para ello utilizamos lo que se ha llamado IPNS (\textit{InterPlanetary Name Space}). Con IPNS podemos asignar a cada usuario un espacio de nombres mutable en \texttt{/ipns/<NodeID>}, de forma que el usuario pueda publicar cualquier tipo de objeto a esta dirección firmado con su clave. Cuando otros usuarios extraen el objeto, pueden comprobar que la firma se corresponde con la clave pública y el \texttt{NodeID}. Esto permite verificar la autenticidad del objeto publicado por el usuario.
+
+Obsérvese que se utiliza un prefijo distinto, \texttt{/ipns} para diferenciar entre rutas mutables e inmutables. 
+
+Las rutas creadas son complicadas de recordar, por lo que se pueden utilizar métodos de codificar los \textit{hashes} en palabras pronunciables como Proquint\cite{proquint}. También es posible utilizar servicios de acortamiento de nombres, algo común en la web.
+
 % subsection ipns_denominación_y_estado_mutable (end)
-
-\subsection{Cómo soluciona IPFS los problemas de HTTP} % (fold)
-\label{sub:cómo_soluciona_ipfs_los_problemas_de_http}
-
-% subsection cómo_soluciona_ipfs_los_problemas_de_http (end)
 
 % section el_protocolo_ipfs (end)
 
 \section{La web distribuida en la actualidad} % (fold)
 \label{sec:la_web_distribuida_en_la_actualidad}
 
+A continuación se detallan algunos ejemplos de uso real actual del protocolo IPFS. 
+
 \subsection{La Wikipedia descentralizada} % (fold)
 \label{sub:la_wikipedia_descentralizada}
+
+El 5 de mayo de 2017 desde el blog oficial de IPFS se anunciaba que se había realizado una instantánea de la Wikipedia turca para publicarla en IPFS. El motivo era simple: unos días antes, el 29 de abril, el Gobierno turco bloqueaba el acceso a Wikipedia en el país. Este tipo de censura contraviene uno de los propósitos principales del proyecto IPFS, que es mejorar el acceso de la población a la información.
+
+Distribuir la Wikipedia en IPFS presenta una serie de ventajas al respecto:
+\begin{itemize}
+	\item Incluso si el editor original es bloqueado el contenido puede ser distribuido por cualquiera que lo tenga. Mientras haya un nodo en la red que tenga la información en cuestión, será posible acceder a ella.
+	\item El contenido que se distribuye está verificado criptográficamente para evitar que nadie pueda manipularlo.
+	\item En cuanto un nodo tiene el contenido, todos los enlaces funcionan. Incluso aunque se hayan destruido todas las copias en todos los nodos, si alguno vuelve a distribuir el contenido todo funciona como antes de destruirlo.
+	\item IPFS no depende de DNS, por lo que aunque se bloquee el acceso o se falsifique el DNS, los nodos IPFS puden seguir accediento al contenido \textit{peer to peer}.
+\end{itemize}
+
+Actualmente la Wikipedia en IPFS es de sólo lectura, con copias semanales y disponible en los idiomas Arábe, Inglés, Kurdo y Turco.
 
 % subsection la_wikipedia_descentralizada (end)
 
 \subsection{Neocities} % (fold)
 \label{sub:neocities}
 
+Neocities es un servicio web gratuito que permite crear tu página web de forma sencilla, similar al antiguo servicio web \textit{Geocities}, que cesó su funcionamiento en octubre de 2009.
+
+Actualmente generan un \textit{hash} IPFS de cada sitio web cada vez que se actualizan, una vez al día. Este \textit{hash} enlaza a la última versión de una web y es accesible desde el \textit{gateway} de Neocities o cualquier otro. 
+
+En el futuro se plantean utilizar IPFS para almacenar todas las páginas webs y distribuir claves IPNS para cada sitio de forma que los usuarios puedan distribuir el contenido sin depender de Neocities. De esta forma incluso si Neoticies deja de existir, los usuarios podrían continuar actualizando sus sitios web.
+
 % subsection neocities (end)
 
 \subsection{La web del referéndum ilegal sobre la independencia de Cataluña (2017)} % (fold)
 \label{sub:la_web_del_referéndum_catalán_de_2017}
+
+El 1 de octubre de 2017 se celebró en Cataluña un ``referéndum'' de autodeterminación promovido por la Generalitat de Cataluña, rechazado por el Gobierno Central y prohibido por el Tribunal Constitucional. 
+
+La Generalitat puso a disposición de los ciudadanos una web, \texttt{referendum.cat}, en la que podían consultar información sobre el referéndum. La justicia española ordenó el cierre de la web y posteriormente se difundió otra web que también fue censurada, \texttt{onvotar.garantiespelreferendum.com}.
+
+Que el gobierno catalán estuviese creando una página web nueva cada día no era sostenible. Por este motivo se decidió utilizar IPFS. Esto permitía:
+\begin{itemize}
+	\item Utilizar un dominio de nivel superior internacional (el de cada \textit{gateway}), evitando que la justicia pudiese ordenar la redirección del dominio.
+	\item Que el dueño del dominio no esté relacionado con la causa independentista, ya que son personas totalmente ajenas. De esta forma una solicitud internacional para evitar el acceso a la web pierde peso.
+	\item Distribuir el contenido. Obviamente aunque se cierre el acceso a un \textit{gateway} existen muchos más. Incluso si se prohibiese el acceso a todos cualquiera podría poner uno en marcha.
+\end{itemize}
 
 % subsection la_web_del_referéndum_catalán_de_2017 (end)
 
