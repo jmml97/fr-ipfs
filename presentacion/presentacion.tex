@@ -31,6 +31,14 @@
 	BoldFont=* Bold,
   	BoldItalicFont=* Bold Italic,
 ]{Concourse T3}
+\setmonofont[
+  Path=./../fuentes/, 
+  UprightFont=* Regular,% 
+  %ItalicFont=* Italic,
+  BoldFont=* Bold,
+    %BoldItalicFont=* Bold Italic,
+    SizeFeatures={Size=8},
+]{FiraCode}
 
 %\setbeamertemplate{navigation symbols}{}
 
@@ -80,30 +88,11 @@
 %% Colores de Solarized para listings
 
 \lstset{
-  % How/what to match
-  % sensitive=true,
-  language=C++,
-  % Border (above and below)
-  %frame=lines,
-  % Line number
-  numbers=left,
-  % Extra margin on line (align with paragraph)
-  xleftmargin=\parindent,
-  % Put extra space under caption
-  belowcaptionskip=1\baselineskip,
-  % Colors
-  % backgroundcolor=\color{sbase3},
-  basicstyle=\tiny\ttfamily\color{text},
-  keywordstyle=\color{accent3},
-  commentstyle=\color{accent5},
-  stringstyle=\color{accent2},
-  numberstyle=\color{text},
-  identifierstyle=\color{accent4},
-  % Break long lines into multiple lines?
-  breaklines=true,
-  % Show a character for spaces?
-  showstringspaces=false,
-  tabsize=2
+  basicstyle=\scriptsize\ttfamily,%
+  breaklines=true,%
+  captionpos=b,                    % sets the caption-position to bottom
+  tabsize=2,                     % sets default tabsize to 2 spaces
+  %keywordstyle=\color{red},
 }
 
 \setbeamerfont{framesubtitle}{size=\normalfont\tiny}
@@ -513,8 +502,6 @@ Utilizar un GAD de Merkle nos aporta:
 \begin{frame}[fragile]{Archivos: \texttt{commit}}
 
   El objeto \texttt{tree} representa una instantánea en el historial de versiones de cualquier objeto.
-
-  Puede hacer referencia a cualquier tipo de objeto.
   
   \begin{lstlisting}[caption={Estructura JSON de un \texttt{commit}.}]
   {
@@ -533,13 +520,52 @@ Utilizar un GAD de Merkle nos aporta:
 
 \end{frame}
 
+\begin{frame}{Nomenclatura mutable}
+  
+  Tal y como hemos descrito hasta ahora IPFS se accede a los archivos por su \textit{hash}.
+
+  Si el contenido del archivo cambia, el \textit{hash} también.
+
+  Necesitamos una forma de acceder a un archivo con una única ruta aunque su contenido cambie.
+
+\end{frame}
+
+\begin{frame}{Nomenclatura mutable: IPNS}
+  
+  Para ello se define IPNS: InterPlanetary Name Space.
+
+  Asignamos a cada usuario un espacio de nombres mutable en \texttt{ipns/<NodeId>}.
+
+  Se pueden utilizar servicios acortadores de nombres o métodos que permiten codificar una cadena en una serie de palabras fáciles de recordar.
+
+\end{frame}
 
 
 
 % section el_protocolo_ipfs (end)
 
-\section{La web distribuida en la actualidad} % (fold)
+\section{IPFS en la actualidad} % (fold)
 \label{sec:la_web_distribuida_en_la_actualidad}
+
+\begin{frame}{Wikipedia descentralizada}
+  
+  El 29 de abril de 2017 el Gobierno turco bloqueaba el acceso a Wikipedia en el país.
+
+  Pocos días después en el blog oficial de IPFS se anuncia que se ha realizado una instantánea de la Wikipedia turca y que estaba disponible a través de IPFS.
+
+  Actualmente se realizan copias semanales de Wikipedia en Árabe, Inglés, Kurdo y Turco.
+
+\end{frame}
+
+\begin{frame}{Web del referéndum ilegal sobre la independencia de Cataluña (2017)}
+  
+  La historia del referéndum ya la conocemos todos.
+
+  El Gobierno catalán utilizó IPFS para informar sobre el referéndum y permitir la consulta de los centros de votación.
+
+  Se evita el bloqueo de la web: dominio internacional y contenido distribuido.
+
+\end{frame}
 
 % section la_web_distribuida_en_la_actualidad (end)
 
