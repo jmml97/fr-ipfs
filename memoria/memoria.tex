@@ -340,55 +340,49 @@ Otra infraestructura clave es BGP (\textit{Border Gateway Protocol}), que se dic
 \section{La web distribuida} % (fold)
 \label{sec:la_web_distribuida}
 
-El propósito de la web distribuida es básicamente deshacerse de la idea de que exista un único emisor central haciendo que cualquier receptor pueda ser a la vez emisor de información. De la misma forma cualquier receptor puede elegir cual es el emisor que mas le conviene en cada momento según sus circunstancias. De esta forma se evitan riesgos tan importantes como la necesidad de confiar en el buen funcionamiento de un único servidor para conseguir una determinada información.
+La web distribuida pretende cambiar el funcionamiento actual de internet. En lugar de depender de un único emisor central de información cada receptor puede ser a la vez emisor. De esta forma se ``distribuye'' la difusión de datos. Permite además que cualquier receptor pueda elegir el emisor que más le convenga bajo unas circunstancias concretas. De esta forma se resuelven los problemas que presenta HTTP y el modelo de web centralizada: no se depende de una serie de infraestructuras concretas y se reparte la distribución de información.
 
-Un ejemplo en la naturaleza que ilustra de forma bastante certera la idea de web distribuida es la ramificación de las neuronas donde cada una de ellas tiene unas ramificaciones capaces de unirse a otras neuronas. De forma que la perdida de una de esas conexiones no impediría la conexión entre las neuronas que conectaba ya que hay mas caminos que las unan.
+Un ejemplo en la naturaleza que ilustra de forma bastante certera la idea de web distribuida es la ramificación de las neuronas. Cada una de ellas tiene unas ramificaciones capaces de unirse a otras neuronas. De esta forma, la pérdida de una de esas conexiones no impide la conexión las neuronas que conectaba ya que hay más caminos que las unen.
 
-Durante una reunión celebrada con otros científicos computacionales, Tim Berners-Lee y Brewster Kahle, jefe de \textit{Internet Archive}, debatieron sobre los nuevos retos de la web y la tendencia a fortalecer el desarrollo de la web descentralizada, es decir, páginas web que podrían distribuirse ampliamente sin el control de un servidor web o alguna empresa de almacenamiento que cobran cuotas como Amazon, DropBox o Google.
-
-Kahle dijo: ``Edward Snowden mostró que inadvertidamente hemos construido la mayor red de vigilancia del mundo con la web''. Ahora, es posible que los gobiernos y las empresas puedan obtener información de quién está leyendo qué páginas web.
-(http://mediatelecom.com.mx/index.php/agencia-informativa/agencia-tecnologia/item/109267-berners-lee-se-pronuncia-por-una-web-descentralizada)
-
-
+El propio Berners-Lee participó en 2016 en la Cumbre de la Web Decentralizada (Decentralized Web Summit, 8-9 de junio de 2016 en San Francisco, California)\cite{decentralized-web-summit} junto a otras personalidades del mundo de Internet. Entre ellas Brewster Kahle, jefe de \textit{Internet Archive} y organizador de la cumbre, quien abogó por una web distribuida, afirmando: ``Edward Snowden nos ha mostrado que sin quererlo hemos construido la mayor red de vigilancia mundial con la web. China puede impedir a sus ciudadanos obtener cierta información y una serie de grandes servicios son, de facto, quienes organizan tu experiencia. Tenemos el poder de cambiar todo eso.''\cite{berners-lee-kahle-summit}
 
 \subsection{Tecnologías de web distribuida} % (fold)
 \label{sub:tecnologías_de_web_distribuida}
 
-Vamos a listar las tecnologías de web distribuida según a que están orientadas dando algunos ejemplos.
-
+En este apartado vamos a proporcionar una serie de ejemplos de tecnologías de web distrbuida que existen actualmente.
 \begin{itemize}
-  \item Orientadas a tecnología Blockchain\footnote{El Blockchain es un ledger digital infalible de transacciones económicas que puede ser programado para registrar no solo trasacciones financieras sino cualquier cosa virtual con valor. Don \& Alex Tapscott, autores de Blockchain Revolution (2016)(https://blockgeeks.com/guides/what-is-blockchain-technology/)}
+  \item Tecnología Blockchain\footnote{El Blockchain es un \textit{libro mayor} digital infalible de transacciones económicas que puede ser programado para registrar no solo trasacciones financieras sino cualquier cosa virtual con valor.\cite{blockchain-technology}}
   \begin{itemize}
-    \item Ethereum: Es una plataforma descentralizada que permite la creación de acuerdos inteligentes entre pares.
+    \item Ethereum: es un \textit{software} de código abierto basado en la tecnología \textit{blockchain} que permite a los desarrolladores construir y desplegar aplicaciones descentralizadas.
   \end{itemize}
-  \item Orientadas a Comunicación:
+  \item Comunicación:
   \begin{itemize}
-    \item BitMessage: Se dedica a la difusión de datos encriptados.
-    \item Ricochet: Es un chat completamente anónimo y sin metadatos.
+    \item BitMessage: mensajería P2P encriptada.
+    \item Ricochet: chat completamente anónimo y sin metadatos.
   \end{itemize}
-  \item Orientadas a Bases de Datos:
+  \item Bases de Datos:
   \begin{itemize}
-    \item BigchainDB: Es una base de datos escalable que divide en capas la tecnologia Blockchain sobredatos descentralizados.
-    \item IPDB: Es una base de datos federada construida sobre BigchainDB e IPFS. LA mantienen una red de vigilantes alrededor del mundo, de los que al menos la mitad lo hacen sin ánimo de lucro.
+    \item BigchainDB: base de datos escalable basada en la tecnologia Blockchain.
+    \item IPDB: red de bases de datos construida sobre BigchainDB e IPFS. La mantienen una red de \textit{vigilantes} alrededor del mundo, de los que al menos la mitad lo hacen sin ánimo de lucro.
   \end{itemize}
-  \item Orientadas a Compartir y Almacenar Datos:
+  \item Distribución y almacenamiento de datos:
   \begin{itemize}
-    \item IPFS: Es un sistema de almcenamiento de archivos distribuidos.
-    \item OnionShare: Aloja una serie de archivos seleccionados como si fueran un servicio oculto en el ordenador del usuario.
-    \item BitTorrent: Es un protocolo para compartir archivos distribuidos.
+    \item IPFS: sistema de archivos distribuido que puede funcionar como alternativa a HTTP. Es el objeto de este trabajo.
+    \item OnionShare: herramienta de código abierto que permite compartir archivos de cualquier tamaño de forma anónima.
+    \item BitTorrent: un protocolo para compartir archivos distribuidos.
   \end{itemize}
-  \item Webs descentralizadas:
+  \item Web descentralizada:
     \begin{itemize}
       \item I2P: Red anónima con servicios ocultos.
-      \item Tor: Proxy de red anónimo. Se suele utilizar para navegar por la "Deep Web" de forma "segura".
+      \item Tor: Proxy de red anónimo. Se suele utilizar para navegar por la \textit{Deep Web} de forma ``segura''.
     \end{itemize}
-   \item MarketPlace\footnote{Plataforma que permite a vendedores y compradores relacionarse para efectuar una transacción comercial de forma que ésta se desarrolle en las mejores condiciones.(https://www.prestashop.com/es/blog/que-son-los-marketplaces-y-como-sacar-el-maximo-partido-de-ellos)}
+   \item Comercio
     \begin{itemize}      
-      \item  OpenBazar
+      \item  OpenBazar: aplicación de código abierto de comercio online P2P.
     \end{itemize}
-   	\item Orientados a Microbloggueo\footnote{Permite a los usuarios publicar mensajes breves.}
+   	\item \textit{Microblogging}:
    	\begin{itemize}
-    	\item Twister: Plataforma P2P de microblogueo completamente descentralizada que dispone de mensajes directos encriptados, anonimato ya que la dirección IP con la que se accede no se almacena en ningún servidor y sin censura ya que es completamente descentralizado.
+    	\item Twister: Plataforma P2P de microblogueo completamente descentralizada que dispone de mensajes directos encriptados, anonimato y sin censura ya que es completamente descentralizada.
     \end{itemize} 
 \end{itemize}
 
@@ -773,7 +767,7 @@ Las rutas creadas son complicadas de recordar, por lo que se pueden utilizar mé
 
 % section el_protocolo_ipfs (end)
 
-\section{La web distribuida en la actualidad} % (fold)
+\section{IPFS en la actualidad} % (fold)
 \label{sec:la_web_distribuida_en_la_actualidad}
 
 A continuación se detallan algunos ejemplos de uso real actual del protocolo IPFS. 
