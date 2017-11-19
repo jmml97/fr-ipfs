@@ -623,7 +623,7 @@ Para el sistema de archivos IFPS implementa un GDA de Merkle, es decir, un grafo
 \begin{enumerate}
 	\item Direccionamiento de contenido: todo el contenido se identifica de forma única mediente el \textit{checksum} de su \texttt{multihash}, incluyendo enlaces.
 	\item Resisencia a la manipulación: todo el contenido se verifica mediante su \textit{checksum}. Si los datos se manipulan o corrompen, IPFS lo detecta.
-	\item Desduplicación: todos los objetos que tienen el mismo contenido son iguales y se almacenan una única vez.
+	\item Unicidad: todos los objetos que tienen el mismo contenido son iguales y se almacenan una única vez.
 \end{enumerate}
 
 \begin{lstlisting}[caption={Implementación de los objetos IPFS.}, language=Golang]
@@ -678,7 +678,7 @@ IPFS también define un conjunto de objetos para modelar un sistema de archivos 
 \subsubsection{Objeto de archivo: \texttt{blob}} % (fold)
 \label{ssub:objeto_de_archivo_blob}
 
-El objeto \texttt{blob} contiene una unidad de datos direccionable y en general representa un archivo sencillo. Un \texttt{blob} es simplemente un conjunto de datos en binario. No hace referencia a nada más ni tiene ningún tipo de atributos.
+El objeto \texttt{blob} contiene una unidad de datos direccionable y en general representa un archivo de menos de 256KB. Un \texttt{blob} es simplemente un conjunto de datos en binario. No hace referencia a nada más ni tiene ningún tipo de atributos.
 
 \begin{lstlisting}[caption={Estructura JSON de un \texttt{blob}.}]
 	{
@@ -691,11 +691,11 @@ El objeto \texttt{blob} contiene una unidad de datos direccionable y en general 
 \subsubsection{Objeto de archivo: \texttt{list}} % (fold)
 \label{ssub:objeto_de_archivo_list}
 
-El objeto \texttt{list} representa un archivo grande, formado a partir de varios \texttt{blobs} IPFS concatenados. Los objetos \texttt{list} contienen una secuencia ordenada de objetos \texttt{blob} o \texttt{list}.
+El objeto \texttt{list} representa un archivo de un tamaño mayor a 256KB, formado a partir de varios \texttt{blobs} IPFS concatenados. Los objetos \texttt{list} contienen una secuencia ordenada de objetos \texttt{blob} o \texttt{list}.
 
 \begin{lstlisting}[caption={Estructura JSON de un \texttt{list}.}]
 	{
-		// Las listas pueden tener un array de objetos como datos
+		// Las listas tienen un array de tipos de objeto como datos
 		"data": ["blob", "list", "blob"],
 
 		// Las listas no tienen nombres en los enlaces
@@ -707,6 +707,8 @@ El objeto \texttt{list} representa un archivo grande, formado a partir de varios
 	}
 \end{lstlisting}
 
+El campo \texttt{size} se utiliza principalmente para optimizar las conexiones P2P y no es necesario conceptualmente para la estructura lógica del sistema de archivos.
+
 % subsubsection objeto_de_archivo_list (end)
 
 \subsubsection{Objeto de archivo: \texttt{tree}} % (fold)
@@ -716,10 +718,10 @@ El objeto \texttt{tree} de IPFS es similiar al de Git: representa un directorio,
 
 \begin{lstlisting}[caption={Estructura JSON de un \texttt{tree}.}]
 	{
-		// Los árboles pueden tener un array de objetos como datos
+		// Los árboles tienen un array de tipos de objeto como datos
 		"data": ["blob", "list", "blob"],
 
-		// Las listas no tienen nombres en los enlaces
+		// Los nombres en los enlaces representan los nombres de los archivos
 		"links": [
 			{ "hash": "nccSbCKcEWHAJ9wj0M72", "name": "test1", "size": 38231 },
 			{ "hash": "2dUB2OS5O7rJBI57n7Hs", "name": "test2", "size": 110 },
@@ -757,7 +759,7 @@ El objeto \texttt{commit} en IPFS representa una instantánea en el historial de
 \subsection{IPNS: Nomenclatura y estado mutable} % (fold)
 \label{sub:ipns_denominación_y_estado_mutable}
 
-IPFS necesita nomenclatura mutable, es decir: que si se modifica un archivo se pueda acceder a él en la misma dirección. Para ello utilizamos lo que se ha llamado IPNS (\textit{InterPlanetary Name Space}). Con IPNS podemos asignar a cada usuario un espacio de nombres mutable en \texttt{/ipns/<NodeID>}, de forma que el usuario pueda publicar cualquier tipo de objeto a esta dirección firmado con su clave. Cuando otros usuarios extraen el objeto, pueden comprobar que la firma se corresponde con la clave pública y el \texttt{NodeID}. Esto permite verificar la autenticidad del objeto publicado por el usuario.
+El protocolo descrito hasta ahora permite obtener direcciones a los objetos a partir de su contenido, mediante un \textit{hash}. Pero esta implementación no es óptima en muchas situaciones, por ejemplo a la hora de acceder a una web cuyo contenido cambiase con el tiempo. No es sostenible tener direcciones distintas cada vez. Para solucionar este problema IPFS necesita nomenclatura mutable, es decir: que si se modifica un archivo se pueda acceder a él en la misma dirección. Para ello utilizamos lo que se ha llamado IPNS (\textit{InterPlanetary Name Space}). Con IPNS podemos asignar a cada usuario un espacio de nombres mutable en \texttt{/ipns/<NodeID>}, de forma que el usuario pueda publicar cualquier tipo de objeto a esta dirección firmado con su clave. Cuando otros usuarios extraen el objeto, pueden comprobar que la firma se corresponde con la clave pública y el \texttt{NodeID}. Esto permite verificar la autenticidad del objeto publicado por el usuario.
 
 Obsérvese que se utiliza un prefijo distinto, \texttt{/ipns} para diferenciar entre rutas mutables e inmutables. 
 
