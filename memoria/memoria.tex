@@ -275,8 +275,8 @@ Para entender por qué decimos que HTTP es \textit{frágil} solo hay que observa
 
 \begin{figure}[h]
 \includegraphics[width=\textwidth]{404}
-\label{fig:404}
 \caption{Error 404.}
+\label{fig:404}
 \end{figure}
 
 Hablamos en pasado pero efectivamente este sigue siendo un problema en la actualidad. No es raro entrar en algún enlace y encotrarnos con el error que podemos ver en la figura \ref{fig:404}. Incluso si no conoces la especificación del protocolo HTTP es probable que ya sepas que 404 es el código de error que nos indica que no hay nada que ver en una dirección.
@@ -393,7 +393,7 @@ En este apartado vamos a proporcionar una serie de ejemplos de tecnologías de w
 \section{El protocolo IPFS} % (fold)
 \label{sec:el_protocolo_ipfs}
 
-IPFS es un sistema de archivos distribuido que recoge algunas de las ideas más exitosas de otros sistemas \textit{peer to peer}. Los \textit{nodos} IPFS almacenan objetos en el almacenamiento local y se conectan entre sí para transferir dichos objetos, que representan archivos y otras estructuras de datos. El protocolo IPFS está dividido en una serie de sub-protocolos que se encargan de proporcionar distintas funciones.
+IPFS\cite{ipfs-white-paper} es un sistema de archivos distribuido que recoge algunas de las ideas más exitosas de otros sistemas \textit{peer to peer}. Los \textit{nodos} IPFS almacenan objetos en el almacenamiento local y se conectan entre sí para transferir dichos objetos, que representan archivos y otras estructuras de datos. El protocolo IPFS está dividido en una serie de sub-protocolos que se encargan de proporcionar distintas funciones.
 
 \subsection{Identidades} % (fold)
 \label{sub:identidades}
@@ -523,7 +523,7 @@ Dado $r$, la probabilidad de enviar a un deudor es:
 	P(r) = 1 - \frac{1}{1 + exp(6-3r)}
 \end{equation*}
 
-\begin{figure}
+\begin{figure}[H]
 	\centering
 	\begin{tikzpicture}
 		\begin{axis}[
@@ -536,9 +536,10 @@ Dado $r$, la probabilidad de enviar a un deudor es:
 		\end{axis}
 	\end{tikzpicture}
 	\caption{Representación de la función de probabilidad $P(r)$.}
+	\label{fig:prob}
 \end{figure}
 
-Como se puede observar en la figura la función decrece fuertemente cuando la \textit{ratio de deuda} del nodo aumenta. Esta radio es una medida de confianza: clemente con las deudas de los nodos con los que se que han intercambiado grandes cantidades de datos e implacable con  aquellos desconocidos y que no son de confianza.
+Como se puede observar en la figura \ref{fig:prob} la función decrece fuertemente cuando la \textit{ratio de deuda} del nodo aumenta. Esta radio es una medida de confianza: clemente con las deudas de los nodos con los que se que han intercambiado grandes cantidades de datos e implacable con  aquellos desconocidos y que no son de confianza.
 
 % subsubsection estrategia_bitswap (end)
 
