@@ -247,7 +247,7 @@ Antonio Ruiz Moya\\ % Supervisor's Name
 
 \section*{Introducción}
 
-El Protocolo de Transferencia de Hipertexto (HTTP por sus siglas en inglés) es uno de los protocolos fundamentales de Internet. El desarrollo de HTTP comenzó en 1989 en el CERN por parte de Tim Berners-Lee. El desarrollo de un estándar fue un trabajo colaborativo entre el Grupo de Trabajo de Ingeniería de Internet (Internet Engineering Task Force, IETF) y el Consorcio WWW (World Wide Web Consortium, W3C), proceso que culminó con la publicación de una serie de \textit{Request for Comments} (RFCs)\footnote{Los RFCs son un tipo de documentos técnicos del IETF que datallan técnicamente diversos aspectos del funcionamiento de Internet y otros protocolos.}. La primera definición de \texttt{HTTP/1.1}, la versión de HTTP más utilizada, apareció en el RFC 2068 de 1997. 
+El Protocolo de Transferencia de Hipertexto (HTTP por sus siglas en inglés) es uno de los protocolos fundamentales de Internet. El desarrollo de HTTP comenzó en 1989 en el CERN por parte de Tim Berners-Lee. El desarrollo de un estándar fue un trabajo colaborativo entre el Grupo de Trabajo de Ingeniería de Internet (Internet Engineering Task Force, IETF) y el Consorcio WWW (World Wide Web Consortium, W3C), proceso que culminó con la publicación de una serie de \textit{Request for Comments} (RFCs)\footnote{Los RFCs son un tipo de documentos técnicos del IETF que detallan técnicamente diversos aspectos del funcionamiento de Internet y otros protocolos.}. La primera definición de \texttt{HTTP/1.1}, la versión de HTTP más utilizada, apareció en el RFC 2068 de 1997. 
 
 Estamos hablando por tanto de un protocolo cuyo diseño comenzó hace más de 25 años. En aquel momento era inimaginable pensar que la tecnología que se estaba desarrollando fuese a ser usada por miles de millones de personas (3.885.567.619 a nivel mundial según las últimas estadísticas\cite{internet-world-stats} de junio de 2017) ni se esperaba que tuviese tal repercusión sobre nuestras vidas. HTTP ha simplificado y facilitado la transmisión de información a nivel mundial. Gracias a ello hemos avanzado hacia una sociedad conectada donde la información y la cultura fluye libremente.
 
@@ -279,7 +279,7 @@ Para entender por qué decimos que HTTP es \textit{frágil} solo hay que observa
 \label{fig:404}
 \end{figure}
 
-Hablamos en pasado pero efectivamente este sigue siendo un problema en la actualidad. No es raro entrar en algún enlace y encotrarnos con el error que podemos ver en la figura \ref{fig:404}. Incluso si no conoces la especificación del protocolo HTTP es probable que ya sepas que 404 es el código de error que nos indica que no hay nada que ver en una dirección.
+Hablamos en pasado pero efectivamente este sigue siendo un problema en la actualidad. No es raro entrar en algún enlace y encontrarnos con el error que podemos ver en la figura \ref{fig:404}. Incluso si no conoces la especificación del protocolo HTTP es probable que ya sepas que 404 es el código de error que nos indica que no hay nada que ver en una dirección.
 
 La desaparición de enlaces (o \textit{link rot} en inglés) es mucho más habitual de lo que se pueda pensar. El creador de \href{pinboard.in}{Pinboard}, Maciej Cegłowski, estima que alrededor del 5\% de los enlaces que almacenan los usuarios en este servicio dejan de funcionar cada año\cite{pinboard-dead-links}. Añade además que uno de sus clientes ha visto cómo dejaban de funcionar el 90\% de los enlaces que llevaba almacenados desde 1997. En 2014, un estudio de Jonathan Zittrain, Kendra Albert y Lawrence Lessig de la Harvard Law School concluyó que aproximadamente el 50\% de los enlaces que aparecen en resoluciones del Tribunal Supremo de los Estados Unidos ya no redireccionan a la información original\cite{scotus-dead-links}. Por estos motivos existen servicios como \href{https://archive.org/}{The Internet Archive}, que se dedica a guardar copias de las páginas web para preservarlas de cara al futuro, o el propio Pinboard, que ofrece a sus usuarios la posibilidad de almacenar copias de los artículos que añadan al servicio.
 
@@ -288,11 +288,11 @@ La desaparición de enlaces (o \textit{link rot} en inglés) es mucho más habit
 \subsection{Hipercentralización} % (fold)
 \label{sub:hipercentralización}
 
-En la \textit{Declaración de Independencia del Ciberespacio}\cite{cyberspace-independence} John Perry Barlow describía una utopía digital en la que los ciudadanos de la red se autogobiernan y las antiguas instituciones no tienen nada que hacer. ``De parte del futuro, os pido a vosotros del pasado que nos dejéis en paz. No sois bienvenidos entre nosotros. No tenéis la soberanía del lugar donde nos reunimos.'' 
+En la \textit{Declaración de Independencia del Ciberespacio}\cite{cyberspace-independence} John Perry Barlow describía una utopía digital en la que los ciudadanos de la red se auto gobiernan y las antiguas instituciones no tienen nada que hacer. ``De parte del futuro, os pido a vosotros del pasado que nos dejéis en paz. No sois bienvenidos entre nosotros. No tenéis la soberanía del lugar donde nos reunimos.'' 
 
-Por desgracia, esta no es la realidad en el año 2017. En la actualidad la web está altamente centralizada. La práctica totalidad de los usuarios de Internet dependen de una serie de servicios concretos. Por poner algunos ejemlos, en 2015 Facebook anunció que más de mil millones de usuarios utilizaron el servicio en un mismo día\cite{billion-facebook}, mientras que una caída del servicio de Google en 2013 provocó una reducción del tráfico de internet del 40\%\cite{google-outage}.
+Por desgracia, esta no es la realidad en el año 2017. En la actualidad la web está altamente centralizada. La práctica totalidad de los usuarios de Internet dependen de una serie de servicios concretos. Por poner algunos ejemplos, en 2015 Facebook anunció que más de mil millones de usuarios utilizaron el servicio en un mismo día\cite{billion-facebook}, mientras que una caída del servicio de Google en 2013 provocó una reducción del tráfico de Internet del 40\%\cite{google-outage}.
 
-El pasado 26 de octubre una inundación en la sala de servidores de la Universidad de Granada provocó que todos los servicios digitales dejasen de funcionar. Puede parecer algo leve pero gran parte de la actividad de la Universidad depdende de que funcione su infraestructura informática. Las secretarías dependen de la red, así como el servicio de comedores, las redes Wi-Fi (tienen que autenticar los usuarios en el servidor) y la Plataforma de Recursos de Apoyo a la Docencia (PRADO), entre otros.
+El pasado 26 de octubre una inundación en la sala de servidores de la Universidad de Granada provocó que todos los servicios digitales dejasen de funcionar. Puede parecer algo leve pero gran parte de la actividad de la Universidad depende de que funcione su infraestructura informática. Las secretarías dependen de la red, así como el servicio de comedores, las redes Wi-Fi (tienen que autenticar los usuarios en el servidor) y la Plataforma de Recursos de Apoyo a la Docencia (PRADO), entre otros.
 
 La \textit{hipercentralización} de la red trae otras consecuencias negativas. Organizaciones como la NSA sólo tienen que intervenir el tráfico de unas pocas empresas para espiarnos, tal y como revelan las filtraciones de Edward Snowden\cite{snowden-leaks}. La censura es mucho más fácil de establecer ya que sólo hay que bloquear el acceso a una serie de sitios concretos. 
 
@@ -323,7 +323,7 @@ Este precio de 1 céntimo por GB quizás sea posible para Google pero no lo es n
 \vspace{-.5cm}
 Podemos observar fácilmente que los precios son mucho mayores, ya que además se cobran las peticiones HTTP y HTTPS. La conclusión a la que queremos llegar es que a pesar de que HTTP ha abaratado muchísimo los costes de distribución de información, siguen siendo altos. Si el contenido a distribuir se encuentra en un servidor concreto, es necesario pagar los gastos generados tanto por distribuir el contenido como por el propio mantenimiento del servidor.
 
-Un \textit{paper} del año 2010\cite{p2p-vdn} describe un procotolo \textit{peer-to-peer} para la transmisión de vídeo a través de Internet que ofrece mejoras de rendimiento y de \textit{escalabilidad}. Para ello divide el \textit{stream} del vídeo en partes más pequeñas y las distribuye entre los \textit{peers} en la red y permite que un cliente pueda obtener los datos del vídeo de varios \textit{peers} en la red. Las simulaciones muestran que bajo algunas circunstancias el protocolo puede ahorrar en un 60\% el ancho de banda necesario para transmitir un vídeo.
+Un \textit{paper} del año 2010\cite{p2p-vdn} describe un protocolo \textit{peer-to-peer} para la transmisión de vídeo a través de Internet que ofrece mejoras de rendimiento y de \textit{escalabilidad}. Para ello divide el \textit{stream} del vídeo en partes más pequeñas y las distribuye entre los \textit{peers} en la red y permite que un cliente pueda obtener los datos del vídeo de varios \textit{peers} en la red. Las simulaciones muestran que bajo algunas circunstancias el protocolo puede ahorrar en un 60\% el ancho de banda necesario para transmitir un vídeo.
 
 % subsection ineficiencia (end)
 
@@ -341,18 +341,18 @@ Otra infraestructura clave es BGP (\textit{Border Gateway Protocol}), que se dic
 \section{La web distribuida} % (fold)
 \label{sec:la_web_distribuida}
 
-La web distribuida pretende cambiar el funcionamiento actual de internet. En lugar de depender de un único emisor central de información cada receptor puede ser a la vez emisor. De esta forma se ``distribuye'' la difusión de datos. Permite además que cualquier receptor pueda elegir el emisor que más le convenga bajo unas circunstancias concretas. De esta forma se resuelven los problemas que presenta HTTP y el modelo de web centralizada: no se depende de una serie de infraestructuras concretas y se reparte la distribución de información.
+La web distribuida pretende cambiar el funcionamiento actual de Internet. En lugar de depender de un único emisor central de información cada receptor puede ser a la vez emisor. De esta forma se ``distribuye'' la difusión de datos. Permite además que cualquier receptor pueda elegir el emisor que más le convenga bajo unas circunstancias concretas. De esta forma se resuelven los problemas que presenta HTTP y el modelo de web centralizada: no se depende de una serie de infraestructuras concretas y se reparte la distribución de información.
 
 Un ejemplo en la naturaleza que ilustra de forma bastante certera la idea de web distribuida es la ramificación de las neuronas. Cada una de ellas tiene unas ramificaciones capaces de unirse a otras neuronas. De esta forma, la pérdida de una de esas conexiones no impide la conexión las neuronas que conectaba ya que hay más caminos que las unen.
 
-El propio Berners-Lee participó en 2016 en la Cumbre de la Web Decentralizada (Decentralized Web Summit, 8-9 de junio de 2016 en San Francisco, California)\cite{decentralized-web-summit} junto a otras personalidades del mundo de Internet. Entre ellas Brewster Kahle, jefe de \textit{Internet Archive} y organizador de la cumbre, quien abogó por una web distribuida, afirmando: ``Edward Snowden nos ha mostrado que sin quererlo hemos construido la mayor red de vigilancia mundial con la web. China puede impedir a sus ciudadanos obtener cierta información y una serie de grandes servicios son, de facto, quienes organizan tu experiencia. Tenemos el poder de cambiar todo eso.''\cite{berners-lee-kahle-summit}
+El propio Berners-Lee participó en 2016 en la Cumbre de la Web Descentralizada (Decentralized Web Summit, 8-9 de junio de 2016 en San Francisco, California)\cite{decentralized-web-summit} junto a otras personalidades del mundo de Internet. Entre ellas Brewster Kahle, jefe de \textit{Internet Archive} y organizador de la cumbre, quien abogó por una web distribuida, afirmando: ``Edward Snowden nos ha mostrado que sin quererlo hemos construido la mayor red de vigilancia mundial con la web. China puede impedir a sus ciudadanos obtener cierta información y una serie de grandes servicios son, de facto, quienes organizan tu experiencia. Tenemos el poder de cambiar todo eso.''\cite{berners-lee-kahle-summit}
 
 \subsection{Tecnologías de web distribuida} % (fold)
 \label{sub:tecnologías_de_web_distribuida}
 
-En este apartado vamos a proporcionar una serie de ejemplos de tecnologías de web distrbuida que existen actualmente.
+En este apartado vamos a proporcionar una serie de ejemplos de tecnologías de web distribuida que existen actualmente.
 \begin{itemize}
-  \item Tecnología Blockchain\footnote{El Blockchain es un \textit{libro mayor} digital infalible de transacciones económicas que puede ser programado para registrar no solo trasacciones financieras sino cualquier cosa virtual con valor.\cite{blockchain-technology}}
+  \item Tecnología Blockchain\footnote{El Blockchain es un \textit{libro mayor} digital infalible de transacciones económicas que puede ser programado para registrar no solo transacciones financieras sino cualquier cosa virtual con valor.\cite{blockchain-technology}}
   \begin{itemize}
     \item Ethereum: es un \textit{software} de código abierto basado en la tecnología \textit{blockchain} que permite a los desarrolladores construir y desplegar aplicaciones descentralizadas.
   \end{itemize}
@@ -363,7 +363,7 @@ En este apartado vamos a proporcionar una serie de ejemplos de tecnologías de w
   \end{itemize}
   \item Bases de Datos:
   \begin{itemize}
-    \item BigchainDB: base de datos escalable basada en la tecnologia Blockchain.
+    \item BigchainDB: base de datos escalable basada en la tecnología Blockchain.
     \item IPDB: red de bases de datos construida sobre BigchainDB e IPFS. La mantienen una red de \textit{vigilantes} alrededor del mundo, de los que al menos la mitad lo hacen sin ánimo de lucro.
   \end{itemize}
   \item Distribución y almacenamiento de datos:
@@ -379,7 +379,7 @@ En este apartado vamos a proporcionar una serie de ejemplos de tecnologías de w
     \end{itemize}
    \item Comercio
     \begin{itemize}      
-      \item  OpenBazar: aplicación de código abierto de comercio online P2P.
+      \item  OpenBazar: aplicación de código abierto de comercio en línea P2P.
     \end{itemize}
    	\item \textit{Microblogging}:
    	\begin{itemize}
@@ -430,7 +430,7 @@ Se encarga de gestionar la generación y verificación de la identidad de los no
 
 Cuando dos \textit{peers} se conectan, intercambian sus claves públicas y comprueban: \texttt{hash(other.PublicKey) == other.NodeId}. Si no es así, se cierra la conexión.
 
-IPFS no utiliza una \textit{función hash} concreta, sino que utiliza valores \textit{autodescriptivos}. Así, los valores del \textit{hash digest} se guardan en el formato \textit{multihash}, que es de la forma:\\ 
+IPFS no utiliza una \textit{función hash} concreta, sino que utiliza valores \textit{auto descriptivos}. Así, los valores del \textit{hash digest} se guardan en el formato \textit{multihash}, que es de la forma:\\ 
 
 \centerline{\texttt{<código función><longitud del digest><bytes del digest>}} 
 
@@ -448,10 +448,10 @@ Los nodos IPFS se comunican frecuentemente con cientos de otros nodos en la red,
 	\item Fiabilidad: IPFS puede proporcionar fiabilidad si las redes subyacentes no lo proporcionan, usando µTP o SCTP.
 	\item Conectividad: IPFS también utiliza las técnicas transversales ICE NAT\footnote{Interactive Connectivity Establishment (ICE) es una técnica usada en redes informáticas para encontrar formas de que dos ordenadores se comuniquen entre sí de la forma más directa posible en redes \textit{peer-to-peer}.\cite{interactive-connectivity-establishment}}.
 	\item Integridad: opcionalmente se puede comprobar la integridad de los mensajes utilizando un \textit{checksum hash}.
-	\item Autenticidad: opcionalmente se puede comprobar la autenticidad de los mensajes utilizando HMAC\footnote{Un código de autentificación de mensajes en clave-\textit{hash} (HMAC) es una construcción específica para calcular un código de autentificación de mensaje (MAC) que implica una función \textit{hash} criptográfica en combinación con una llave criptográfica secreta. Como cualquier MAC, puede ser utilizado para verificar simultáneamente la integridad de los datos y la autentificación de un mensaje.\cite{HMAC}} con la clave pública del remitente.
+	\item Autenticidad: opcionalmente se puede comprobar la autenticidad de los mensajes utilizando HMAC\footnote{Un código de autenticación de mensajes en clave-\textit{hash} (HMAC) es una construcción específica para calcular un código de autenticación de mensaje (MAC) que implica una función \textit{hash} criptográfica en combinación con una llave criptográfica secreta. Como cualquier MAC, puede ser utilizado para verificar simultáneamente la integridad de los datos y la autenticación de un mensaje.\cite{HMAC}} con la clave pública del remitente.
 \end{itemize}
 
-IPFS puede utilizar cualquier red: no depende ni asume acceso a IP. Esto permite utilizar IPFS en redes superpuestas\footnote{Una red superpuesta (\textit{overlay network}) es una red virtual de nodos enlazados lógicamente, que está construida sobre una o más redes subyacentes (\textit{underlying network}).\cite{red-superpuesta}}. IPFS almacena las direcciones como strings con formato byte \texttt{multiaddr} para que la red subyacente las utilice. \texttt{multiaddr} proporciona una forma de expresar direcciones y sus protocolos incluyendo soporte para encapsulación.
+IPFS puede utilizar cualquier red: no depende ni asume acceso a IP. Esto permite utilizar IPFS en redes superpuestas\footnote{Una red superpuesta (\textit{overlay network}) es una red virtual de nodos enlazados lógicamente, que está construida sobre una o más redes subyacentes (\textit{underlying network}).\cite{red-superpuesta}}. IPFS almacena las direcciones como \textit{strings} con formato byte \texttt{multiaddr} para que la red subyacente las utilice. \texttt{multiaddr} proporciona una forma de expresar direcciones y sus protocolos incluyendo soporte para encapsulamiento.
 
 % subsection red (end)
 
@@ -488,7 +488,7 @@ Distintos casos de uso pueden requerir diferentes sistemas de enrutamiento, por 
 
 En IPFS la distribución ocurre intercambiando bloques con \textit{peers} utilizando un protocolo inspirado por BitTorrent: BitSwap. Como BitTorrent, los \textit{peers} de BitSwap buscan conseguir un conjunto de bloques (\texttt{want\_list}) y tienen otro conjunto de bloques que ofrecer (\texttt{have\_list}). Sin embargo, a diferencia de BitTorrent, BitSwap no se limita a una serie de bloques en un \textit{torrent}, sino que opera como un ``mercado'' donde los nodos pueden adquirir los bloques que necesitan, independientemente del archivo al que esos bloques pertenezcan. Esta idea requeriría que se implementase una moneda virtual, lo que haría necesario un control central sobre dicha moneda. En lugar de eso, IPFS implementa esto como la \textit{estrategia BitSwap}, que veremos a continuación.
 
-En el caso base, los nodos BitSwap tienen que proporcionar un valor inmediato entre ellos en forma de bloques. Esto funciona bien cuando la distribución de bloques entre nodos es complementaria: cada uno de ellos tiene lo que necesita el otro. Sin embargo lo más probable es que esto no sea así. En algunos casos los nodos tienen que \textit{trabajar} para conseguir sus bloques. En el caso de que un nodo no tenga algo que quieran sus \textit{peers}, buscará las pizas que estos quieren, con una prioridad menor que los que el propio nodo quiere. Esto incentiva que los nodos almacenen en caché y distribuyan piezas más raras, incluso si no están interesadas en ellas directamente.
+En el caso base, los nodos BitSwap tienen que proporcionar un valor inmediato entre ellos en forma de bloques. Esto funciona bien cuando la distribución de bloques entre nodos es complementaria: cada uno de ellos tiene lo que necesita el otro. Sin embargo lo más probable es que esto no sea así. En algunos casos los nodos tienen que \textit{trabajar} para conseguir sus bloques. En el caso de que un nodo no tenga algo que quieran sus \textit{peers}, buscará las piezas que estos quieren, con una prioridad menor que los que el propio nodo quiere. Esto incentiva que los nodos almacenen en caché y distribuyan piezas más raras, incluso si no están interesadas en ellas directamente.
 
 \subsubsection{Crédito BitSwap} % (fold)
 \label{ssub:crédito_bitswap}
@@ -564,7 +564,7 @@ Los nodos BitSwap mantienen una especie de ``libro mayor''\footnote{Un \textit{l
 \subsubsection{Especificación de Bitswap} % (fold)
 \label{ssub:especificación_de_bitswap}
 
-Los nodos BitSwap siguien un protocolo simple.
+Los nodos BitSwap siguen un protocolo simple.
 
 \begin{lstlisting}[caption={Implementación del protocolo BitSwap}, language=Golang]
 	// Estado adicional almacenado
@@ -623,7 +623,7 @@ Un esquema de una conexión con un \textit{peer} sería el siguiente:
 
 Para el sistema de archivos IFPS implementa un GDA de Merkle, es decir, un grafo dirigido acíclico donde los enlaces entre los objetos son \textit{hashes} criptográficos. Es una generalización de la estructura de datos de Git. Estos grafos proporcionan a IFPS una serie de propiedades muy útiles:
 \begin{enumerate}
-	\item Direccionamiento de contenido: todo el contenido se identifica de forma única mediente el \textit{checksum} de su \texttt{multihash}, incluyendo enlaces.
+	\item Direccionamiento de contenido: todo el contenido se identifica de forma única mediante el \textit{checksum} de su \texttt{multihash}, incluyendo enlaces.
 	\item Resisencia a la manipulación: todo el contenido se verifica mediante su \textit{checksum}. Si los datos se manipulan o corrompen, IPFS lo detecta.
 	\item Unicidad: todos los objetos que tienen el mismo contenido son iguales y se almacenan una única vez.
 \end{enumerate}
@@ -652,7 +652,7 @@ Para el sistema de archivos IFPS implementa un GDA de Merkle, es decir, un grafo
 \subsubsection{Rutas} % (fold)
 \label{ssub:rutas}
 
-Los objetos IPFS pueden ser recorridos con una API de rutas \textit{string}. Las rutas duncionan como lo hacen en sistemas UNIX tradicionales y en la Web. Los enlaces del GDA de Merkle hacen que recorrerlo sea muy sencillo.
+Los objetos IPFS pueden ser recorridos con una API de rutas \textit{string}. Las rutas funcionan como lo hacen en sistemas UNIX tradicionales y en la Web. Los enlaces del GDA de Merkle hacen que recorrerlo sea muy sencillo.
 
 \begin{lstlisting}[caption={Rutas en IPFS.}]
 	// Formato
@@ -680,7 +680,7 @@ IPFS también define un conjunto de objetos para modelar un sistema de archivos 
 \subsubsection{Objeto de archivo: \texttt{blob}} % (fold)
 \label{ssub:objeto_de_archivo_blob}
 
-El objeto \texttt{blob} contiene una unidad de datos direccionable y en general representa un archivo de menos de 256KB. Un \texttt{blob} es simplemente un conjunto de datos en binario. No hace referencia a nada más ni tiene ningún tipo de atributos.
+El objeto \texttt{blob} contiene una unidad de datos a la que se le puede asignar una dirección y en general representa un archivo de menos de 256KB. Un \texttt{blob} es simplemente un conjunto de datos en binario. No hace referencia a nada más ni tiene ningún tipo de atributos.
 
 \begin{lstlisting}[caption={Estructura JSON de un \texttt{blob}.}]
 	{
@@ -716,7 +716,7 @@ El campo \texttt{size} se utiliza principalmente para optimizar las conexiones P
 \subsubsection{Objeto de archivo: \texttt{tree}} % (fold)
 \label{ssub:objeto_de_archivo_tree}
 
-El objeto \texttt{tree} de IPFS es similiar al de Git: representa un directorio, un \textit{mapeo} de nombres a \textit{hashes}. Los \textit{hashes} hacen referencia a \texttt{blobs}, \texttt{lists}, \texttt{trees} o \texttt{commits}.
+El objeto \texttt{tree} de IPFS es similar al de Git: representa un directorio, un \textit{mapeo} de nombres a \textit{hashes}. Los \textit{hashes} hacen referencia a \texttt{blobs}, \texttt{lists}, \texttt{trees} o \texttt{commits}.
 
 \begin{lstlisting}[caption={Estructura JSON de un \texttt{tree}.}]
 	{
@@ -786,10 +786,10 @@ Distribuir la Wikipedia en IPFS presenta una serie de ventajas al respecto:
 	\item Incluso si el editor original es bloqueado el contenido puede ser distribuido por cualquiera que lo tenga. Mientras haya un nodo en la red que tenga la información en cuestión, será posible acceder a ella.
 	\item El contenido que se distribuye está verificado criptográficamente para evitar que nadie pueda manipularlo.
 	\item En cuanto un nodo tiene el contenido, todos los enlaces funcionan. Incluso aunque se hayan destruido todas las copias en todos los nodos, si alguno vuelve a distribuir el contenido todo funciona como antes de destruirlo.
-	\item IPFS no depende de DNS, por lo que aunque se bloquee el acceso o se falsifique el DNS, los nodos IPFS puden seguir accediento al contenido \textit{peer to peer}.
+	\item IPFS no depende de DNS, por lo que aunque se bloquee el acceso o se falsifique el DNS, los nodos IPFS pueden seguir accediendo al contenido \textit{peer to peer}.
 \end{itemize}
 
-Actualmente la Wikipedia en IPFS es de sólo lectura, con copias semanales y disponible en los idiomas Arábe, Inglés, Kurdo y Turco.
+Actualmente la Wikipedia en IPFS es de sólo lectura, con copias semanales y disponible en los idiomas Árabe, Inglés, Kurdo y Turco.
 
 % subsection la_wikipedia_descentralizada (end)
 
